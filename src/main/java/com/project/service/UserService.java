@@ -11,4 +11,10 @@ public interface UserService {
 
     User getById(final long id) throws UserNotFoundException;
 
+    void addUser(User user);
+
+    User updateUser(User user, long id) throws UserNotFoundException;
+
+    void deleteUser(final long id) throws UserNotFoundException;
+
 }

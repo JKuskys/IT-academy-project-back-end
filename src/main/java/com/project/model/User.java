@@ -31,5 +31,5 @@ public class User {
     private String password;
 
     @Column(name = "is_admin")
-    private boolean is_admin;
+    private boolean isAdmin;
 }

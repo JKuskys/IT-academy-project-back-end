@@ -36,4 +36,33 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("api/users")
+    ResponseEntity<User> postUser(@RequestBody User newUser) {
+        userService.addUser(newUser);
+        try {
+            return new ResponseEntity<User>(userService.getById(newUser.getId()), HttpStatus.CREATED);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("api/users/{id}")
+    ResponseEntity<User> putUser(@RequestBody User newUser, @PathVariable Long id) {
+        try {
+            return new ResponseEntity<User>(userService.updateUser(newUser, id), HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("api/users/{id}")
+    ResponseEntity deleteEmployee(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

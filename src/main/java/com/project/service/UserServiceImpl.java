@@ -29,4 +29,30 @@ public class UserServiceImpl implements UserService {
     public User getById(final long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
+
+    @Override
+    public void addUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(User user, long id) throws UserNotFoundException {
+        if(!userRepository.findById(id).isPresent())
+            throw new UserNotFoundException(id);
+        return userRepository.findById(id)
+                .map(existingUser -> {
+                    existingUser.setAdmin(user.isAdmin());
+                    existingUser.setEmail(user.getEmail());
+                    existingUser.setPassword(user.getPassword());
+                    return userRepository.save(existingUser);
+                })
+                .orElse(null);
+    }
+
+    @Override
+    public void deleteUser(long id) throws UserNotFoundException {
+        if(!userRepository.findById(id).isPresent())
+            throw new UserNotFoundException(id);
+        userRepository.deleteById(id);
+    }
 }
