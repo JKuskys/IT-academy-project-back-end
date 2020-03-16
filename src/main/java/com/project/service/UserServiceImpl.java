@@ -1,5 +1,7 @@
 package com.project.service;
 
+import com.project.exception.UserEmailExistsException;
+import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
 import com.project.repository.UserRepository;
@@ -34,8 +36,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(User user) throws UserException {
         userValidator.validate(user);
+
+        if(userRepository.findByEmail(user.getEmail()) != null)
+            throw new UserEmailExistsException(user.getEmail());
 
         user.setAdmin(false); //probably more logical as we don't have admin registration
 
@@ -43,11 +48,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user, long id) throws UserNotFoundException {
+    public User updateUser(User user, long id) throws UserException {
         if(!userRepository.findById(id).isPresent())
             throw new UserNotFoundException(id);
 
         userValidator.validate(user);
+
+        if(userRepository.findByEmail(user.getEmail()) != null
+                && userRepository.findByEmail(user.getEmail()).getId() != id)
+            throw new UserEmailExistsException(user.getEmail());
 
         return userRepository.findById(id)
                 .map(existingUser -> {

@@ -1,7 +1,11 @@
 package com.project.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class UserNotFoundException extends UserException {
     public UserNotFoundException(long id) {
-        super("Vartotojas su nurodytu identifikatoriumi(" + id + ") neegzistuoja.");
+        super("Vartotojas su nurodytu identifikatoriumi (" + id + ") neegzistuoja.");
     }
 }

@@ -22,7 +22,7 @@ public class User {
 
     @NotNull
     @NotBlank
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @NotNull
