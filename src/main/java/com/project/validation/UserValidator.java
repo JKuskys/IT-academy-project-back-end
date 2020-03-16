@@ -8,10 +8,10 @@ public class UserValidator {
     private PasswordValidator passwordValidator = new PasswordValidator();
 
     public void validate(User user){
-        mandatoryValueValidator.validate(user.getEmail(), "Email");
-        emailValidator.validate(user.getEmail(), "Email");
+        mandatoryValueValidator.validate(user.getEmail(), "Elektroninis paštas");
+        emailValidator.validate(user.getEmail(), "Elektroninis paštas");
 
-        mandatoryValueValidator.validate(user.getPassword(), "Password");
-        passwordValidator.validate(user.getPassword(), "Password");
+        mandatoryValueValidator.validate(user.getPassword(), "Slaptažodis");
+        passwordValidator.validate(user.getPassword(), "Slaptažodis");
     }
 }

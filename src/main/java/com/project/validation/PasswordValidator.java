@@ -20,6 +20,6 @@ public class PasswordValidator extends Validator<String> {
 
         if(!matcher.matches())
             throw new ValidationException(message
-                    + " must be between 7 and 30 characters, contain at least one capital letter and at least one number");
+                    + " turi būti tarp 7 ir 30 simbolių, turėti bent vieną didžiąją raidę ir skaičių");
     }
 }
