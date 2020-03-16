@@ -20,13 +20,8 @@ public class Application {
 
     @NotBlank
     @NotNull
-    @Column(name="name")
+    @Column(name="full_name")
     private String name;
-
-    @NotBlank
-    @NotNull
-    @Column(name="last_name")
-    private String last_name;
 
     @NotBlank
     @NotNull

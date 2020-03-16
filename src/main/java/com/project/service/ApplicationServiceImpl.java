@@ -49,7 +49,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .map(existingApplication -> {
                     existingApplication.setAcademy_time(application.isAcademy_time());
                     existingApplication.setName(application.getName());
-                    existingApplication.setLast_name(application.getLast_name());
                     existingApplication.setPhone_number(application.getPhone_number());
                     existingApplication.setEducation(application.getEducation());
                     existingApplication.setFree_time(application.getFree_time());
