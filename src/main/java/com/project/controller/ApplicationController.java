@@ -1,15 +1,14 @@
 package com.project.controller;
 
 import com.project.exception.ApplicationNotFoundException;
-import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
-import com.project.model.User;
 import com.project.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -38,7 +37,7 @@ public class ApplicationController {
     }
 
     @PostMapping("api/applications")
-    ResponseEntity<Application> postUser(@RequestBody Application newApplication) {
+    ResponseEntity<Application> postUser(@Valid @RequestBody Application newApplication) {
         applicationService.addApplication(newApplication);
         try {
             return new ResponseEntity<Application>(applicationService.getById(newApplication.getId()), HttpStatus.CREATED);
@@ -48,7 +47,7 @@ public class ApplicationController {
     }
 
     @PutMapping("api/applications/{id}")
-    ResponseEntity<Application> putApplication(@RequestBody Application newApplication, @PathVariable Long id) {
+    ResponseEntity<Application> putApplication(@Valid @RequestBody Application newApplication, @PathVariable Long id) {
         try {
             return new ResponseEntity<Application>(applicationService.updateApplication(newApplication, id), HttpStatus.OK);
         } catch (ApplicationNotFoundException e) {
