@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
 import com.project.service.UserService;
@@ -29,40 +30,24 @@ public class UserController {
     }
 
     @GetMapping("api/users/{id}")
-    ResponseEntity<User> getUser(@PathVariable long id){
-        try {
-            return new ResponseEntity<User>(userService.getById(id), HttpStatus.OK);
-        } catch (UserNotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    ResponseEntity<User> getUser(@PathVariable long id) throws UserNotFoundException {
+        return new ResponseEntity<User>(userService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping("api/users")
-    ResponseEntity<User> postUser(@RequestBody User newUser) {
+    ResponseEntity<User> postUser(@RequestBody User newUser) throws UserException {
         userService.addUser(newUser);
-        try {
-            return new ResponseEntity<User>(userService.getById(newUser.getId()), HttpStatus.CREATED);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return new ResponseEntity<User>(userService.getById(newUser.getId()), HttpStatus.CREATED);
     }
 
     @PutMapping("api/users/{id}")
-    ResponseEntity<User> putUser(@RequestBody User newUser, @PathVariable Long id) {
-        try {
-            return new ResponseEntity<User>(userService.updateUser(newUser, id), HttpStatus.OK);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    ResponseEntity<User> putUser(@RequestBody User newUser, @PathVariable Long id) throws UserException {
+        return new ResponseEntity<User>(userService.updateUser(newUser, id), HttpStatus.OK);
     }
 
     @DeleteMapping("api/users/{id}")
-    ResponseEntity<User> deleteUser(@PathVariable Long id) {
-        try {
-            userService.deleteUser(id);
-            return ResponseEntity.noContent().build();
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    ResponseEntity<User> deleteUser(@PathVariable Long id) throws UserNotFoundException {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 }

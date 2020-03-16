@@ -17,6 +17,7 @@ public class Application {
 
     @Id
     @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotBlank(message = "Vardas negali būti tuščias")

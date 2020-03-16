@@ -1,5 +1,6 @@
 package com.project.service;
 
+import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
 
@@ -11,9 +12,9 @@ public interface UserService {
 
     User getById(final long id) throws UserNotFoundException;
 
-    void addUser(User user);
+    void addUser(User user) throws UserException;
 
-    User updateUser(User user, long id) throws UserNotFoundException;
+    User updateUser(User user, long id) throws UserException;
 
     void deleteUser(final long id) throws UserNotFoundException;
 

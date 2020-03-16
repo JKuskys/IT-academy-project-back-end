@@ -1,12 +1,12 @@
 CREATE TABLE user (
-    id bigint PRIMARY KEY,
+    id bigint PRIMARY KEY AUTO_INCREMENT,
     email varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
     is_admin boolean NOT NULL default false
 );
 
 CREATE TABLE application (
-    id bigint NOT NULL PRIMARY KEY,
+    id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     user_id bigint NOT NULL,
     full_name varchar(255) NOT NULL,
     phone_number varchar(20) NOT NULL,
