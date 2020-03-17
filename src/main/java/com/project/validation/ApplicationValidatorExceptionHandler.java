@@ -1,4 +1,4 @@
-package com.project.Validation;
+package com.project.validation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;

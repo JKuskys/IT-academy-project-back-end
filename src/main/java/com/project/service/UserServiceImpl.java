@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private UserValidator userValidator;
+    private final UserRepository userRepository;
+    private final UserValidator userValidator;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository)
@@ -36,8 +36,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(User user) throws UserException {
+    public User addUser(User user) throws UserException {
         userValidator.validate(user);
+
+        user.setId(null);//do not allow choosing id
 
         if(userRepository.findByEmail(user.getEmail()).isPresent())
             throw new UserEmailExistsException(user.getEmail());
@@ -46,7 +48,7 @@ public class UserServiceImpl implements UserService {
         roles.add("User");
         user.setRoles(roles); //probably more logical as we don't have admin registration
 
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override

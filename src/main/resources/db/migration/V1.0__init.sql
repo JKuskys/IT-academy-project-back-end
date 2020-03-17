@@ -6,7 +6,7 @@ CREATE TABLE user (
 );
 
 CREATE TABLE application (
-    id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id bigint PRIMARY KEY AUTO_INCREMENT,
     user_id bigint NOT NULL,
     full_name varchar(255) NOT NULL,
     phone_number varchar(20) NOT NULL,
