@@ -14,38 +14,39 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("api/users")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("api/users")
+    @GetMapping("")
     public ResponseEntity<List<User>> getUsers(){
         List<User> users = userService.getAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("api/users/{id}")
-    ResponseEntity<User> getUser(@PathVariable long id) throws UserNotFoundException {
-        return new ResponseEntity<User>(userService.getById(id), HttpStatus.OK);
+    @GetMapping("/{id}")
+    ResponseEntity<User> fetchUser(@PathVariable long id) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
-    @PostMapping("api/users")
-    ResponseEntity<User> postUser(@RequestBody User newUser) throws UserException {
-        userService.addUser(newUser);
-        return new ResponseEntity<User>(userService.getById(newUser.getId()), HttpStatus.CREATED);
+    @PostMapping("")
+    ResponseEntity<User> createUser(@RequestBody User newUser) throws UserException {
+        User createdUser = userService.addUser(newUser);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("api/users/{id}")
-    ResponseEntity<User> putUser(@RequestBody User newUser, @PathVariable Long id) throws UserException {
-        return new ResponseEntity<User>(userService.updateUser(newUser, id), HttpStatus.OK);
+    @PutMapping("/{id}")
+    ResponseEntity<User> updateUser(@RequestBody User newUser, @PathVariable Long id) throws UserException {
+        return new ResponseEntity<>(userService.updateUser(newUser, id), HttpStatus.OK);
     }
 
-    @DeleteMapping("api/users/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<User> deleteUser(@PathVariable Long id) throws UserNotFoundException {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();

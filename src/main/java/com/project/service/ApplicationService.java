@@ -10,7 +10,7 @@ import java.util.List;
 public interface ApplicationService {
     List<Application> getAll();
     Application getById(long id) throws ApplicationNotFoundException;
-    void addApplication(Application application) throws UserException;
+    Application addApplication(Application application) throws UserException;
     void deleteApplication(long id) throws ApplicationNotFoundException;
     Application updateApplication(Application application, long id) throws ApplicationNotFoundException;
 }

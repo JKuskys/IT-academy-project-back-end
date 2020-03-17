@@ -13,8 +13,8 @@ import java.util.List;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
-    private ApplicationRepository applicationRepository;
-    private UserService userService;
+    private final ApplicationRepository applicationRepository;
+    private final UserService userService;
 
     @Autowired
     public ApplicationServiceImpl(ApplicationRepository applicationRepository, UserService userService) {
@@ -33,10 +33,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void addApplication(Application application) throws UserException {
+    public Application addApplication(Application application) throws UserException {
         userService.addUser(application.getUser());
         application.setId(null);//do not allow choosing id
-        applicationRepository.save(application);
+        return applicationRepository.save(application);
     }
 
     @Override

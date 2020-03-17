@@ -12,7 +12,7 @@ public interface UserService {
 
     User getById(final long id) throws UserNotFoundException;
 
-    void addUser(User user) throws UserException;
+    User addUser(User user) throws UserException;
 
     User updateUser(User user, long id) throws UserException;
 
