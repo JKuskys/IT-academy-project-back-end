@@ -1,6 +1,7 @@
 package com.project.service;
 
 import com.project.exception.ApplicationNotFoundException;
+import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
 import com.project.repository.ApplicationRepository;
@@ -13,10 +14,12 @@ import java.util.List;
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
     private ApplicationRepository applicationRepository;
+    private UserService userService;
 
     @Autowired
-    public ApplicationServiceImpl(ApplicationRepository applicationRepository) {
+    public ApplicationServiceImpl(ApplicationRepository applicationRepository, UserService userService) {
         this.applicationRepository = applicationRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -30,7 +33,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void addApplication(Application application) {
+    public void addApplication(Application application) throws UserException {
+        userService.addUser(application.getUser());
         applicationRepository.save(application);
     }
 
@@ -45,6 +49,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application updateApplication(Application application, long id) throws ApplicationNotFoundException {
         if(!applicationRepository.findById(id).isPresent())
             throw new ApplicationNotFoundException(id);
+
         return applicationRepository.findById(id)
                 .map(existingApplication -> {
                     existingApplication.setAcademy_time(application.isAcademy_time());
