@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<User>> getUsers(){
         List<User> users = userService.getAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -35,19 +35,19 @@ public class UserController {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     ResponseEntity<User> createUser(@RequestBody User newUser) throws UserException {
         User createdUser = userService.addUser(newUser);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<User> updateUser(@RequestBody User newUser, @PathVariable Long id) throws UserException {
-        return new ResponseEntity<>(userService.updateUser(newUser, id), HttpStatus.OK);
+    ResponseEntity<User> updateUser(@RequestBody User changedUser, @PathVariable Long id) throws UserException {
+        return new ResponseEntity<>(userService.updateUser(changedUser, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<User> deleteUser(@PathVariable Long id) throws UserNotFoundException {
+    ResponseEntity deleteUser(@PathVariable Long id) throws UserNotFoundException {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

@@ -23,7 +23,7 @@ public class ApplicationController {
         this.applicationService = applicationService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<Application>> getAll() {
         List<Application> list = applicationService.getAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -34,19 +34,19 @@ public class ApplicationController {
         return new ResponseEntity<>(applicationService.getById(id), HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping
     ResponseEntity<Application> createApplication(@Valid @RequestBody Application newApplication) throws UserException, ApplicationNotFoundException {
         Application savedApplication = applicationService.addApplication(newApplication);
         return new ResponseEntity<>(savedApplication, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Application> updateApplication(@RequestBody Application newApplication, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
-        return new ResponseEntity<>(applicationService.updateApplication(newApplication, id), HttpStatus.OK);
+    ResponseEntity<Application> updateApplication(@RequestBody Application changedApplication, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+        return new ResponseEntity<>(applicationService.updateApplication(changedApplication, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Application> deleteApplication(@PathVariable Long id) throws ApplicationNotFoundException {
+    ResponseEntity deleteApplication(@PathVariable Long id) throws ApplicationNotFoundException {
         applicationService.deleteApplication(id);
         return ResponseEntity.noContent().build();
     }
