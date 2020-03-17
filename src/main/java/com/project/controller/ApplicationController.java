@@ -14,55 +14,40 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("api/applications")
 public class ApplicationController {
-    private ApplicationService applicationService;
+    private final ApplicationService applicationService;
 
     @Autowired
     public ApplicationController(ApplicationService applicationService) {
         this.applicationService = applicationService;
     }
 
-    @GetMapping("api/applications")
+    @GetMapping
     public ResponseEntity<List<Application>> getAll() {
         List<Application> list = applicationService.getAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("api/applications/{id}")
-    public ResponseEntity<Application> getApplication(@PathVariable long id) {
-        try {
-            return new ResponseEntity<Application>(applicationService.getById(id), HttpStatus.OK);
-        } catch (ApplicationNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity<Application> fetchApplication(@PathVariable long id) throws ApplicationNotFoundException {
+        return new ResponseEntity<>(applicationService.getById(id), HttpStatus.OK);
     }
 
-    @PostMapping("api/applications")
-    ResponseEntity<Application> postUser(@Valid @RequestBody Application newApplication) throws UserException {
-        applicationService.addApplication(newApplication);
-        try {
-            return new ResponseEntity<Application>(applicationService.getById(newApplication.getId()), HttpStatus.CREATED);
-        } catch (ApplicationNotFoundException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping
+    ResponseEntity<Application> createApplication(@Valid @RequestBody Application newApplication) throws UserException, ApplicationNotFoundException {
+        Application savedApplication = applicationService.addApplication(newApplication);
+        return new ResponseEntity<>(savedApplication, HttpStatus.CREATED);
     }
 
-    @PutMapping("api/applications/{id}")
-    ResponseEntity<Application> putApplication(@Valid @RequestBody Application newApplication, @PathVariable Long id) {
-        try {
-            return new ResponseEntity<Application>(applicationService.updateApplication(newApplication, id), HttpStatus.OK);
-        } catch (ApplicationNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/{id}")
+    ResponseEntity<Application> updateApplication(@RequestBody Application changedApplication, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+        return new ResponseEntity<>(applicationService.updateApplication(changedApplication, id), HttpStatus.OK);
     }
 
-    @DeleteMapping("api/applications/{id}")
-    ResponseEntity<Application> deleteApplication(@PathVariable Long id) {
-        try {
-            applicationService.deleteApplication(id);
-            return ResponseEntity.noContent().build();
-        } catch (ApplicationNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping("/{id}")
+    ResponseEntity deleteApplication(@PathVariable Long id) throws ApplicationNotFoundException {
+        applicationService.deleteApplication(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -13,8 +13,8 @@ import java.util.List;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
-    private ApplicationRepository applicationRepository;
-    private UserService userService;
+    private final ApplicationRepository applicationRepository;
+    private final UserService userService;
 
     @Autowired
     public ApplicationServiceImpl(ApplicationRepository applicationRepository, UserService userService) {
@@ -33,9 +33,10 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void addApplication(Application application) throws UserException {
+    public Application addApplication(Application application) throws UserException {
         userService.addUser(application.getUser());
-        applicationRepository.save(application);
+        application.setId(null);//do not allow choosing id
+        return applicationRepository.save(application);
     }
 
     @Override
@@ -52,17 +53,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applicationRepository.findById(id)
                 .map(existingApplication -> {
-                    existingApplication.setAcademy_time(application.isAcademy_time());
-                    existingApplication.setName(application.getName());
-                    existingApplication.setPhone_number(application.getPhone_number());
-                    existingApplication.setEducation(application.getEducation());
-                    existingApplication.setFree_time(application.getFree_time());
-                    existingApplication.setAgreement(application.isAgreement());
-                    existingApplication.setComment(application.getComment());
-                    existingApplication.setReason(application.getReason());
-                    existingApplication.setTechnologies(application.getTechnologies());
-                    existingApplication.setSource(application.getSource());
-                    existingApplication.setApplication_date(application.getApplication_date());
+                    //TODO add status update ONLY (with admin actions)
                     return applicationRepository.save(existingApplication);
                 })
                 .orElse(null);
