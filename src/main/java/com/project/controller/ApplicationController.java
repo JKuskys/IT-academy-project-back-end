@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.exception.ApplicationNotFoundException;
+import com.project.exception.UserException;
 import com.project.model.Application;
 import com.project.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class ApplicationController {
     }
 
     @PostMapping("api/applications")
-    ResponseEntity<Application> postUser(@Valid @RequestBody Application newApplication) {
+    ResponseEntity<Application> postUser(@Valid @RequestBody Application newApplication) throws UserException {
         applicationService.addApplication(newApplication);
         try {
             return new ResponseEntity<Application>(applicationService.getById(newApplication.getId()), HttpStatus.CREATED);
