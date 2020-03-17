@@ -47,25 +47,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application updateApplication(Application application, long id) throws ApplicationNotFoundException, UserException {
+    public Application updateApplication(Application application, long id) throws ApplicationNotFoundException {
         if(!applicationRepository.findById(id).isPresent())
             throw new ApplicationNotFoundException(id);
 
-        userService.updateUser(application.getUser(), applicationRepository.findById(id).get().getUser().getId());
-
         return applicationRepository.findById(id)
                 .map(existingApplication -> {
-                    existingApplication.setAcademy_time(application.isAcademy_time());
-                    existingApplication.setName(application.getName());
-                    existingApplication.setPhone_number(application.getPhone_number());
-                    existingApplication.setEducation(application.getEducation());
-                    existingApplication.setFree_time(application.getFree_time());
-                    existingApplication.setAgreement(application.isAgreement());
-                    existingApplication.setComment(application.getComment());
-                    existingApplication.setReason(application.getReason());
-                    existingApplication.setTechnologies(application.getTechnologies());
-                    existingApplication.setSource(application.getSource());
-                    existingApplication.setApplication_date(application.getApplication_date());
+                    //TODO add status update ONLY (with admin actions)
                     return applicationRepository.save(existingApplication);
                 })
                 .orElse(null);

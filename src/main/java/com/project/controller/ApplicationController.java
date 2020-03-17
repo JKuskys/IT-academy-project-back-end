@@ -34,13 +34,13 @@ public class ApplicationController {
     }
 
     @PostMapping("api/applications")
-    ResponseEntity<Application> postUser(@Valid @RequestBody Application newApplication) throws UserException, ApplicationNotFoundException {
+    ResponseEntity<Application> postApplication(@Valid @RequestBody Application newApplication) throws UserException, ApplicationNotFoundException {
         applicationService.addApplication(newApplication);
         return new ResponseEntity<Application>(applicationService.getById(newApplication.getId()), HttpStatus.CREATED);
     }
 
     @PutMapping("api/applications/{id}")
-    ResponseEntity<Application> putApplication(@Valid @RequestBody Application newApplication, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+    ResponseEntity<Application> putApplication(@RequestBody Application newApplication, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
         return new ResponseEntity<Application>(applicationService.updateApplication(newApplication, id), HttpStatus.OK);
     }
 
