@@ -35,6 +35,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public void addApplication(Application application) throws UserException {
         userService.addUser(application.getUser());
+        application.setId(null);//do not allow choosing id
         applicationRepository.save(application);
     }
 
@@ -46,9 +47,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Application updateApplication(Application application, long id) throws ApplicationNotFoundException {
+    public Application updateApplication(Application application, long id) throws ApplicationNotFoundException, UserException {
         if(!applicationRepository.findById(id).isPresent())
             throw new ApplicationNotFoundException(id);
+
+        userService.updateUser(application.getUser(), applicationRepository.findById(id).get().getUser().getId());
 
         return applicationRepository.findById(id)
                 .map(existingApplication -> {

@@ -16,9 +16,8 @@ import javax.validation.constraints.Size;
 public class Application {
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Vardas negali būti tuščias")
     @Size(max = 255, message = "Vardas negali būti ilgesnis nei 255 simboliai")

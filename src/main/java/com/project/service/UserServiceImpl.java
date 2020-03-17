@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
     public void addUser(User user) throws UserException {
         userValidator.validate(user);
 
+        user.setId(null);//do not allow choosing id
+
         if(userRepository.findByEmail(user.getEmail()) != null)
             throw new UserEmailExistsException(user.getEmail());
 
