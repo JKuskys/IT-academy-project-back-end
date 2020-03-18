@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan({"com.project.service"})
 @ComponentScan({"com.project.controller"})
 @ComponentScan({"com.project.exception"})
+@ComponentScan({"com.project.validation"})
 public class DemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
