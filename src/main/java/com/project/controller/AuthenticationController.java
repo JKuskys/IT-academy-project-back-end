@@ -38,13 +38,13 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequest data) {
         try {
-            String username = data.getUsername();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtTokenProvider.createToken(username, this.users.findByEmail(username)
+            String email = data.getEmail();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, data.getPassword()));
+            String token = jwtTokenProvider.createToken(email, this.users.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("Neteisingas vartotojo paštas arba slaptažodis"))
                     .getRoles());
             Map<Object, Object> model = new HashMap<>();
-            model.put("username", username);
+            model.put("email", email);
             model.put("token", token);
             return ok(model);
         } catch (AuthenticationException ex) {
