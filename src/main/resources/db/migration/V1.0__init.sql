@@ -24,6 +24,19 @@ CREATE TABLE application (
         ON DELETE CASCADE
 );
 
+CREATE table user_roles (
+    roles varchar(20) NOT NULL PRIMARY KEY,
+    user_id bigint NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+);
+
 INSERT INTO user values (1, 'aaaa', 'aaaaaaaaa', 'USER');
+INSERT INTO user values (2, 'test', 'password', 'ADMIN');
 INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freetime', true,
     'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'));
+INSERT INTO user_roles values ('USER', 1);
+INSERT INTO user_roles values ('ADMIN', 2);
+
+/* TODO fix this mess */
