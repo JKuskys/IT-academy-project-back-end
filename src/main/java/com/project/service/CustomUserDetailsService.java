@@ -1,13 +1,14 @@
 package com.project.service;
 
-import com.project.exception.UserNotFoundException;
 import com.project.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
+@Qualifier("CustomUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository users;
