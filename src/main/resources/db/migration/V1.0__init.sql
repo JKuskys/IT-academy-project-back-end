@@ -38,5 +38,3 @@ INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freet
     'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'));
 INSERT INTO user_roles values ('USER', 1);
 INSERT INTO user_roles values ('ADMIN', 2);
-
-/* TODO fix this mess */
