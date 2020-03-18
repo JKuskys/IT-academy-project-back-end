@@ -28,7 +28,7 @@ public class Application {
     @NotBlank(message = "Telefono numeris negali būti tuščias")
     @Size(max = 20, message = "Telefono numeris negali būti ilgesnis nei 20 simbolių")
     @Column(name="phone_number")
-    private String phone_number;
+    private String phoneNumber;
 
     @NotBlank(message = "Mokymosi įstaiga negali būti tuščia")
     @Size(max = 255, message = "Mokymosi įstaigos pavadinimas negali būti ilgesnis nei 255 simboliai")
@@ -38,7 +38,7 @@ public class Application {
     @NotBlank(message = "Pomėgių laukas negali būti tuščias")
     @Size(max = 1500, message = "Pomėgių lauke negali būti daugiau nei 1500 simbolių")
     @Column(name="free_time")
-    private String free_time;
+    private String freeTime;
 
     @NotNull(message = "Ar reikalinga trišalė sutartis privalo būti pasirinkta")
     @Column(name="agreement")
@@ -50,7 +50,7 @@ public class Application {
 
     @NotNull(message = "Ar tinka akademijos laikas privalo būti pasirinkta")
     @Column(name="academy_time")
-    private boolean academy_time;
+    private boolean academyTime;
 
     @NotBlank(message = "Dalyvavimo akademijoje priežastis negali būti tuščia")
     @Size(max = 255, message = "Dalyvavimo akademijoje priežastis negali būti ilgesnė nei 1500 simboliai")
@@ -69,7 +69,7 @@ public class Application {
 
     @NotBlank(message = "Paraiškos data negali būti tuščia")
     @Column(name="application_date")
-    private String application_date;
+    private String applicationDate;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

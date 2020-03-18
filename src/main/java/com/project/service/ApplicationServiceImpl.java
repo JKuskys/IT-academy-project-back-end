@@ -52,17 +52,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applicationRepository.findById(id)
                 .map(existingApplication -> {
-                    existingApplication.setAcademy_time(application.isAcademy_time());
+                    existingApplication.setAcademyTime(application.isAcademyTime());
                     existingApplication.setName(application.getName());
-                    existingApplication.setPhone_number(application.getPhone_number());
+                    existingApplication.setPhoneNumber(application.getPhoneNumber());
                     existingApplication.setEducation(application.getEducation());
-                    existingApplication.setFree_time(application.getFree_time());
+                    existingApplication.setFreeTime(application.getFreeTime());
                     existingApplication.setAgreement(application.isAgreement());
                     existingApplication.setComment(application.getComment());
                     existingApplication.setReason(application.getReason());
                     existingApplication.setTechnologies(application.getTechnologies());
                     existingApplication.setSource(application.getSource());
-                    existingApplication.setApplication_date(application.getApplication_date());
+                    existingApplication.setApplicationDate(application.getApplicationDate());
                     return applicationRepository.save(existingApplication);
                 })
                 .orElse(null);
