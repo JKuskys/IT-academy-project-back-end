@@ -39,10 +39,12 @@ public class UserServiceImpl implements UserService {
     public void addUser(User user) throws UserException {
         userValidator.validate(user);
 
-        if(userRepository.findByEmail(user.getEmail()) != null)
+        if(userRepository.findByEmail(user.getEmail()).isPresent())
             throw new UserEmailExistsException(user.getEmail());
 
-        user.setAdmin(false); //probably more logical as we don't have admin registration
+        List<String> roles = new ArrayList<>();
+        roles.add("User");
+        user.setRoles(roles); //probably more logical as we don't have admin registration
 
         userRepository.save(user);
     }
@@ -54,8 +56,8 @@ public class UserServiceImpl implements UserService {
 
         userValidator.validate(user);
 
-        if(userRepository.findByEmail(user.getEmail()) != null
-                && userRepository.findByEmail(user.getEmail()).getId() != id)
+        if(userRepository.findByEmail(user.getEmail()).isPresent()
+                && userRepository.findByEmail(user.getEmail()).get().getId() != id)
             throw new UserEmailExistsException(user.getEmail());
 
         return userRepository.findById(id)
