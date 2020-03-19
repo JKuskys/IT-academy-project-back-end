@@ -1,6 +1,7 @@
 package com.project.controller;
 
 import com.project.model.AuthenticationRequest;
+import com.project.model.User;
 import com.project.repository.UserRepository;
 import com.project.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
 

@@ -32,8 +32,8 @@ CREATE table user_roles (
         ON DELETE CASCADE
 );
 
-INSERT INTO user values (1, 'aaaa', 'aaaaaaaaa', 'USER');
-INSERT INTO user values (2, 'test', 'password', 'ADMIN');
+INSERT INTO user values (1, 'aaaa@testemail.com', 'aaaaaaaaa', 'USER');
+INSERT INTO user values (2, 'test@testemail.com', 'password', 'ADMIN');
 INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freetime', true,
     'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'));
 INSERT INTO user_roles values ('USER', 1);
