@@ -2,7 +2,6 @@ package com.project.service;
 
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserException;
-import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
 import com.project.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
