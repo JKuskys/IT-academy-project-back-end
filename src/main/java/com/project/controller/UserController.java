@@ -32,18 +32,18 @@ public class UserController {
 
     @GetMapping("/{id}")
     ResponseEntity<User> fetchUser(@PathVariable long id) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
+        return new ResponseEntity(userService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<User> createUser(@RequestBody User newUser) throws UserException {
+    ResponseEntity createUser(@RequestBody User newUser) throws UserException {
         User createdUser = userService.addUser(newUser);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<User> updateUser(@RequestBody User changedUser, @PathVariable Long id) throws UserException {
-        return new ResponseEntity<>(userService.updateUser(changedUser, id), HttpStatus.OK);
+    ResponseEntity updateUser(@RequestBody User changedUser, @PathVariable Long id) throws UserException {
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
