@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,8 @@ public class AuthenticationController {
     public ResponseEntity login(@RequestBody AuthenticationRequest data) {
         try {
             String email = data.getEmail();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, data.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, data.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtTokenProvider.createToken(email, this.users.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("Neteisingas vartotojo paštas arba slaptažodis"))
                     .getRoles());
