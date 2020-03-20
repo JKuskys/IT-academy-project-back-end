@@ -31,22 +31,22 @@ public class UserController {
 
     @GetMapping("/{id}")
     ResponseEntity<User> fetchUser(@PathVariable long id) throws UserNotFoundException {
-        return new ResponseEntity(userService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity createUser(@RequestBody User newUser) throws UserException {
+    ResponseEntity<HttpStatus> createUser(@RequestBody User newUser) throws UserException {
         User createdUser = userService.addUser(newUser);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity updateUser(@RequestBody User changedUser, @PathVariable Long id) throws UserException {
-        return new ResponseEntity(HttpStatus.OK);
+    ResponseEntity<HttpStatus> updateUser(@RequestBody User changedUser, @PathVariable Long id) throws UserException {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteUser(@PathVariable Long id) throws UserNotFoundException {
+    ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) throws UserNotFoundException {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
