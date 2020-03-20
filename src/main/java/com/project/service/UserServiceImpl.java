@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserValidator userValidator;
     private BCryptPasswordEncoder bcryptEncoder;
 
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcryptEncoder)
     {
