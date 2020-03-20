@@ -49,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
                 .antMatchers("/", "/auth/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/").permitAll()
@@ -61,9 +61,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/applications").authenticated()
 
                 //.anyRequest().authenticated()
-            .and()
+                .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
-            .and()
+                .and()
                 .csrf().disable();
     }
 }

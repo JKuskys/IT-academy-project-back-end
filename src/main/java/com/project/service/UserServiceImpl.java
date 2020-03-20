@@ -22,8 +22,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcryptEncoder)
-    {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcryptEncoder) {
         this.userRepository = userRepository;
         this.userValidator = new UserValidator();
         this.bcryptEncoder = bcryptEncoder;
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
         user.setId(null);//do not allow choosing id
 
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
-        if(userRepository.findByEmail(user.getEmail()).isPresent())
+        if (userRepository.findByEmail(user.getEmail()).isPresent())
             throw new UserEmailExistsException(user.getEmail());
 
         List<String> roles = new ArrayList<>();
@@ -58,12 +57,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user, long id) throws UserException {
-        if(!userRepository.findById(id).isPresent())
+        if (!userRepository.findById(id).isPresent())
             throw new UserNotFoundException(id);
 
         userValidator.validate(user);
 
-        if(userRepository.findByEmail(user.getEmail()).isPresent()
+        if (userRepository.findByEmail(user.getEmail()).isPresent()
                 && userRepository.findByEmail(user.getEmail()).get().getId() != id)
             throw new UserEmailExistsException(user.getEmail());
 
@@ -79,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(long id) throws UserNotFoundException {
-        if(!userRepository.findById(id).isPresent())
+        if (!userRepository.findById(id).isPresent())
             throw new UserNotFoundException(id);
         userRepository.deleteById(id);
     }
