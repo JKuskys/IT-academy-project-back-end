@@ -24,7 +24,7 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
     @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey = "{noop}secret";
+    private String secretKey = "itacademy2020";
 
     @Value("${security.jwt.token.expire-length:900000}")
     private long validityInMilliseconds = 900000; // 15min sesijos trukme
