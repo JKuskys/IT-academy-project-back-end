@@ -7,6 +7,7 @@ import com.project.model.User;
 import com.project.repository.UserRepository;
 import com.project.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,12 +18,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserValidator userValidator;
+    private BCryptPasswordEncoder bcryptEncoder;
+
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository)
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcryptEncoder)
     {
         this.userRepository = userRepository;
         this.userValidator = new UserValidator();
+        this.bcryptEncoder = bcryptEncoder;
     }
 
     @Override
@@ -41,10 +45,13 @@ public class UserServiceImpl implements UserService {
 
         user.setId(null);//do not allow choosing id
 
-        if(userRepository.findByEmail(user.getEmail()) != null)
+        user.setPassword(bcryptEncoder.encode(user.getPassword()));
+        if(userRepository.findByEmail(user.getEmail()).isPresent())
             throw new UserEmailExistsException(user.getEmail());
 
-        user.setAdmin(false); //probably more logical as we don't have admin registration
+        List<String> roles = new ArrayList<>();
+        roles.add("User");
+        user.setRoles(roles); //probably more logical as we don't have admin registration
 
         return userRepository.save(user);
     }
@@ -56,8 +63,8 @@ public class UserServiceImpl implements UserService {
 
         userValidator.validate(user);
 
-        if(userRepository.findByEmail(user.getEmail()) != null
-                && userRepository.findByEmail(user.getEmail()).getId() != id)
+        if(userRepository.findByEmail(user.getEmail()).isPresent()
+                && userRepository.findByEmail(user.getEmail()).get().getId() != id)
             throw new UserEmailExistsException(user.getEmail());
 
         return userRepository.findById(id)

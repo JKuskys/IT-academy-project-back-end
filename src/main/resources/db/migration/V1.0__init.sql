@@ -2,7 +2,7 @@ CREATE TABLE user (
     id bigint PRIMARY KEY AUTO_INCREMENT,
     email varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
-    is_admin boolean NOT NULL default false
+    roles varchar(20) NOT NULL default 'USER'
 );
 
 CREATE TABLE application (
@@ -24,6 +24,17 @@ CREATE TABLE application (
         ON DELETE CASCADE
 );
 
-INSERT INTO user values (1, 'aaaa', 'aaaaaaaaa', true);
+CREATE table user_roles (
+    roles varchar(20) NOT NULL PRIMARY KEY,
+    user_id bigint NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+        ON UPDATE NO ACTION
+        ON DELETE CASCADE
+);
+
+INSERT INTO user values (1, 'aaaa@testemail.com', 'aaaaaaaaa', 'USER');
+INSERT INTO user values (2, 'test@testemail.com', 'password', 'ADMIN');
 INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freetime', true,
     'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'));
+INSERT INTO user_roles values ('USER', 1);
+INSERT INTO user_roles values ('ADMIN', 2);
