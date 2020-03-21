@@ -48,8 +48,8 @@ create table admin_comments (
         on delete cascade
 );
 
-INSERT INTO user values (1, 'aaaa@testemail.com', 'aaaaaaaaa');
-INSERT INTO user values (2, 'test@testemail.com', 'password');
+INSERT INTO user values (1, 'testas@mail.com', '$2a$10$KYQpdsE94e8xY76SVz8aauXYj7RSi3vKQmZXRrMNpZSiXx9wt8QJm');
+INSERT INTO user values (2, 'test@testmail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS');
 INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freetime', true,
     'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'nauja', null);
 insert into user_roles values (1, 'USER', 1);
