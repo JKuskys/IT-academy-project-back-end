@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
             throw new UserEmailExistsException(user.getEmail());
 
         List<String> roles = new ArrayList<>();
-        roles.add("User");
+        roles.add("USER");
         user.setRoles(roles); //probably more logical as we don't have admin registration
 
         return userRepository.save(user);

@@ -25,21 +25,13 @@ CREATE TABLE application (
         ON DELETE CASCADE
 );
 
-create table roles(
-    id bigint not null primary key AUTO_INCREMENT,
-    role varchar(20)
-);
-
 CREATE table user_roles (
     id bigint not null primary key AUTO_INCREMENT,
-    role_id bigint NOT NULL,
+    roles varchar(20) NOT NULL default 'USER' check(roles in ('ADMIN', 'USER')),
     user_id bigint NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user(id)
         ON UPDATE NO ACTION
-        ON DELETE CASCADE,
-    FOREIGN KEY (role_id) references roles(id)
-        on update no action
-        on delete cascade
+        ON DELETE CASCADE
 );
 
 create table admin_comments (
@@ -60,9 +52,6 @@ INSERT INTO user values (1, 'aaaa@testemail.com', 'aaaaaaaaa');
 INSERT INTO user values (2, 'test@testemail.com', 'password');
 INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freetime', true,
     'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'nauja', null);
-INSERT INTO roles values (1, 'USER');
-INSERT INTO roles values (2, 'ADMIN');
-insert into user_roles values (1, 1, 1);
-insert into user_roles values (2, 2, 2);
-insert into user_roles values (3, 2, 1);
+insert into user_roles values (1, 'USER', 1);
+insert into user_roles values (2, 'ADMIN', 2);
 insert into admin_comments values (1, 2, 1, 'test comment aaaaaaaaaaaaaaaa', TO_DATE('2020-03-20', 'YYYY-MM-DD'));
