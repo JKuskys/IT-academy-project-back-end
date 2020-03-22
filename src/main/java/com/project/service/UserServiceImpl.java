@@ -42,33 +42,35 @@ public class UserServiceImpl implements UserService {
     public User addUser(User user) throws UserException {
         userValidator.validate(user);
 
-        user.setId(null);//do not allow choosing id
+        user.setId(null);
 
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
-        if (userRepository.findByEmail(user.getEmail()).isPresent())
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new UserEmailExistsException(user.getEmail());
+        }
 
         List<String> roles = new ArrayList<>();
         roles.add("USER");
-        user.setRoles(roles); //probably more logical as we don't have admin registration
+        user.setRoles(roles);
 
         return userRepository.save(user);
     }
 
     @Override
     public User updateUser(User user, long id) throws UserException {
-        if (!userRepository.findById(id).isPresent())
+        if (!userRepository.findById(id).isPresent()) {
             throw new UserNotFoundException(id);
+        }
 
         userValidator.validate(user);
 
         if (userRepository.findByEmail(user.getEmail()).isPresent()
-                && userRepository.findByEmail(user.getEmail()).get().getId() != id)
+                && userRepository.findByEmail(user.getEmail()).get().getId() != id) {
             throw new UserEmailExistsException(user.getEmail());
+        }
 
         return userRepository.findById(id)
                 .map(existingUser -> {
-                    //updating is_admin field is not allowed
                     existingUser.setEmail(user.getEmail());
                     existingUser.setPassword(user.getPassword());
                     return userRepository.save(existingUser);
@@ -78,8 +80,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(long id) throws UserNotFoundException {
-        if (!userRepository.findById(id).isPresent())
+        if (!userRepository.findById(id).isPresent()) {
             throw new UserNotFoundException(id);
+        }
         userRepository.deleteById(id);
     }
 }

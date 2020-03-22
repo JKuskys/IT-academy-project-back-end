@@ -24,7 +24,7 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Application>> getAll() {
+    public ResponseEntity<List<Application>> fetchAllApplications() {
         List<Application> list = applicationService.getAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -35,13 +35,14 @@ public class ApplicationController {
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createApplication(@Valid @RequestBody Application newApplication) throws UserException, ApplicationNotFoundException {
-        Application savedApplication = applicationService.addApplication(newApplication);
+    ResponseEntity<HttpStatus> createApplication(@Valid @RequestBody Application application) throws UserException, ApplicationNotFoundException {
+        applicationService.addApplication(application);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateApplication(@RequestBody Application changedApplication, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+    ResponseEntity<HttpStatus> updateApplication(@RequestBody Application application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+        applicationService.updateApplication(application, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

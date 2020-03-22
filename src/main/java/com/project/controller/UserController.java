@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<User>> fetchAllUsers() {
         List<User> users = userService.getAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -35,13 +35,14 @@ public class UserController {
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createUser(@RequestBody User newUser) throws UserException {
-        User createdUser = userService.addUser(newUser);
+    ResponseEntity<HttpStatus> createUser(@RequestBody User user) throws UserException {
+        userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateUser(@RequestBody User changedUser, @PathVariable Long id) throws UserException {
+    ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @PathVariable Long id) throws UserException {
+        userService.updateUser(user, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

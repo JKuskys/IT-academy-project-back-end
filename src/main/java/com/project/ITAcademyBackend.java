@@ -12,8 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan({"com.project.exception"})
 @ComponentScan({"com.project.validation"})
 @ComponentScan({"com.project.security"})
-public class DemoApplication {
+public class ITAcademyBackend {
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(ITAcademyBackend.class, args);
     }
 }
