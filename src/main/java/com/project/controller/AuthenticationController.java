@@ -1,7 +1,6 @@
 package com.project.controller;
 
 import com.project.model.AuthenticationRequest;
-import com.project.model.User;
 import com.project.repository.UserRepository;
 import com.project.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -34,14 +31,14 @@ public class AuthenticationController {
     private final UserRepository users;
 
     @Autowired
-    public AuthenticationController (AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository users) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserRepository users) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.users = users;
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequest data) {
+    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthenticationRequest data) {
         try {
             String email = data.getEmail();
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, data.getPassword()));

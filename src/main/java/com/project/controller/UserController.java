@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,29 +24,30 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsers(){
+    public ResponseEntity<List<User>> fetchAllUsers() {
         List<User> users = userService.getAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<User> fetchUser(@PathVariable long id) throws UserNotFoundException {
-        return new ResponseEntity(userService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity createUser(@RequestBody User newUser) throws UserException {
-        User createdUser = userService.addUser(newUser);
-        return new ResponseEntity(HttpStatus.CREATED);
+    ResponseEntity<HttpStatus> createUser(@RequestBody User user) throws UserException {
+        userService.addUser(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity updateUser(@RequestBody User changedUser, @PathVariable Long id) throws UserException {
-        return new ResponseEntity(HttpStatus.OK);
+    ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @PathVariable Long id) throws UserException {
+        userService.updateUser(user, id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity deleteUser(@PathVariable Long id) throws UserNotFoundException {
+    ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) throws UserNotFoundException {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

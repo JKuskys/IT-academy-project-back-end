@@ -2,7 +2,6 @@ package com.project.service;
 
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserException;
-import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
 import com.project.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,19 +40,21 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void deleteApplication(long id) throws ApplicationNotFoundException {
-        if(!applicationRepository.findById(id).isPresent())
+        if (!applicationRepository.findById(id).isPresent()) {
             throw new ApplicationNotFoundException(id);
+        }
         applicationRepository.deleteById(id);
     }
 
     @Override
     public Application updateApplication(Application application, long id) throws ApplicationNotFoundException {
-        if(!applicationRepository.findById(id).isPresent())
+        if (!applicationRepository.findById(id).isPresent()) {
             throw new ApplicationNotFoundException(id);
+        }
 
         return applicationRepository.findById(id)
                 .map(existingApplication -> {
-                    //TODO add status update ONLY (with admin actions)
+                    // TODO add proper update functionality
                     return applicationRepository.save(existingApplication);
                 })
                 .orElse(null);
