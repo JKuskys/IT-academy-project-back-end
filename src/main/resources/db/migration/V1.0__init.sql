@@ -36,11 +36,11 @@ CREATE table user_roles (
 
 create table admin_comments (
     id bigint not null primary key AUTO_INCREMENT,
-    admin_id bigint not null,
+    user_id bigint not null,
     application_id bigint not null,
     comment varchar(1500) not null,
     comment_date date not null,
-    foreign key (admin_id) references user(id)
+    foreign key (user_id) references user(id)
         on update no action
         on delete cascade,
     foreign key (application_id) references application(id)
