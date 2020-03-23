@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void cofigureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
@@ -56,8 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/applications").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/applications").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/applications").permitAll()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
                 .and()
