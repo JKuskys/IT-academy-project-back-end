@@ -2,7 +2,7 @@ package com.project.controller;
 
 import com.project.exception.AdminCommentNotFoundException;
 import com.project.model.AdminComment;
-import com.project.model.CommentResponse;
+import com.project.model.response.CommentResponse;
 import com.project.service.AdminCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
