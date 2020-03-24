@@ -29,6 +29,9 @@ public class AdminComment {
     @Column(name = "comment_date")
     private String commentDate;
 
+    @Column(name = "date_modified")
+    private String dateModified;
+
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
@@ -36,4 +39,11 @@ public class AdminComment {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
+
+    public AdminComment(String comment, String date, Application application, User user) {
+        this.comment = comment;
+        this.commentDate = date;
+        this.application = application;
+        this.author = user;
+    }
 }

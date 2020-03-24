@@ -6,7 +6,10 @@ import com.project.repository.AdminCommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,10 +42,9 @@ public class AdminCommentServiceImpl implements AdminCommentService {
     public AdminComment updateAdminComment(AdminComment adminComment, Long id) throws AdminCommentNotFoundException {
         return commentRepository.findById(id)
                 .map(existingComment -> {
-                    existingComment.setApplication(adminComment.getApplication());
-                    existingComment.setAuthor(adminComment.getAuthor());
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     existingComment.setComment(adminComment.getComment());
-                    existingComment.setCommentDate(adminComment.getCommentDate());
+                    existingComment.setDateModified(dateFormat.format(new Date()));
                     return commentRepository.save(existingComment);
                 }).orElseThrow(() -> new AdminCommentNotFoundException(id)) ;
     }
