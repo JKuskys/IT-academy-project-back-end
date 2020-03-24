@@ -36,6 +36,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application addApplication(Application application) throws UserException {
         userService.addUser(application.getUser());
         application.setId(null);//do not allow choosing id
+        application.setStatus("nauja");
         return applicationRepository.save(application);
     }
 

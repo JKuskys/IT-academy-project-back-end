@@ -26,6 +26,5 @@ public class RequestComment {
 
     private long applicationId;
 
-    private long authorId;
-
+    private String authorEmail;
 }

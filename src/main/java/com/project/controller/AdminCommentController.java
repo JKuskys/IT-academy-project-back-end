@@ -40,7 +40,8 @@ public class AdminCommentController {
         List<CommentResponse> response = new ArrayList<>();
 
         for(AdminComment comment: comments) {
-            response.add(new CommentResponse(comment.getComment(), comment.getAuthor().getEmail(), comment.getCommentDate(), comment.getDateModified()));
+            response.add(new CommentResponse(comment.getId(), comment.getComment(), comment.getAuthor().getEmail(),
+                    comment.getCommentDate(), comment.getDateModified()));
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -50,7 +51,8 @@ public class AdminCommentController {
     public ResponseEntity<CommentResponse> fetchComment(@PathVariable Long id) throws AdminCommentNotFoundException {
         AdminComment comment = commentService.getById(id);
         return new ResponseEntity<>(
-                new CommentResponse(comment.getComment(), comment.getAuthor().getEmail(), comment.getCommentDate(), comment.getDateModified()),
+                new CommentResponse(comment.getId(), comment.getComment(), comment.getAuthor().getEmail(),
+                        comment.getCommentDate(), comment.getDateModified()),
                 HttpStatus.OK
         );
     }
@@ -58,7 +60,7 @@ public class AdminCommentController {
     @PostMapping
     public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody RequestComment comment) throws ApplicationNotFoundException, UserNotFoundException {
         AdminComment adminComment = new AdminComment(comment.getComment(), comment.getDate(),
-                applicationService.getById(comment.getApplicationId()), userService.getById(comment.getAuthorId()));
+                applicationService.getById(comment.getApplicationId()), userService.getByEmail(comment.getAuthorEmail()));
         commentService.addAdminComment(adminComment);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -67,7 +69,7 @@ public class AdminCommentController {
     public ResponseEntity<HttpStatus> updateComment(@RequestBody RequestComment comment, @PathVariable Long id)
             throws AdminCommentNotFoundException, ApplicationNotFoundException, UserNotFoundException {
         AdminComment adminComment = new AdminComment(comment.getComment(), comment.getDate(),
-                applicationService.getById(comment.getApplicationId()), userService.getById(comment.getAuthorId()));
+                applicationService.getById(comment.getApplicationId()), userService.getByEmail(comment.getAuthorEmail()));
         commentService.updateAdminComment(adminComment, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
