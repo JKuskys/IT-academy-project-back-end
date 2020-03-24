@@ -15,4 +15,6 @@ public class CommentResponse implements Serializable {
     private String author;
 
     private String commentDate;
+
+    private String dateModified;
 }

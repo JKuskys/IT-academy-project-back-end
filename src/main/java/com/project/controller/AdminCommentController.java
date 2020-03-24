@@ -1,9 +1,15 @@
 package com.project.controller;
 
 import com.project.exception.AdminCommentNotFoundException;
+import com.project.exception.ApplicationNotFoundException;
+import com.project.exception.UserNotFoundException;
 import com.project.model.AdminComment;
+import com.project.model.request.RequestComment;
 import com.project.model.response.CommentResponse;
+import com.project.repository.ApplicationRepository;
 import com.project.service.AdminCommentService;
+import com.project.service.ApplicationService;
+import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +24,13 @@ import java.util.List;
 @RequestMapping("api/comments")
 public class AdminCommentController {
     private final AdminCommentService commentService;
+    private final ApplicationService applicationService;
+    private final UserService userService;
 
     @Autowired
-    public AdminCommentController(AdminCommentService commentService){
+    public AdminCommentController(AdminCommentService commentService, ApplicationService applicationService, UserService userService){
+        this.applicationService = applicationService;
+        this.userService = userService;
         this.commentService = commentService;
     }
 
@@ -30,7 +40,7 @@ public class AdminCommentController {
         List<CommentResponse> response = new ArrayList<>();
 
         for(AdminComment comment: comments) {
-            response.add(new CommentResponse(comment.getComment(), comment.getAuthor().getEmail(), comment.getCommentDate()));
+            response.add(new CommentResponse(comment.getComment(), comment.getAuthor().getEmail(), comment.getCommentDate(), comment.getDateModified()));
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -40,20 +50,25 @@ public class AdminCommentController {
     public ResponseEntity<CommentResponse> fetchComment(@PathVariable Long id) throws AdminCommentNotFoundException {
         AdminComment comment = commentService.getById(id);
         return new ResponseEntity<>(
-                new CommentResponse(comment.getComment(), comment.getAuthor().getEmail(), comment.getCommentDate()),
+                new CommentResponse(comment.getComment(), comment.getAuthor().getEmail(), comment.getCommentDate(), comment.getDateModified()),
                 HttpStatus.OK
         );
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody AdminComment comment) {
-        commentService.addAdminComment(comment);
+    public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody RequestComment comment) throws ApplicationNotFoundException, UserNotFoundException {
+        AdminComment adminComment = new AdminComment(comment.getComment(), comment.getDate(),
+                applicationService.getById(comment.getApplicationId()), userService.getById(comment.getAuthorId()));
+        commentService.addAdminComment(adminComment);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateComment(@RequestBody AdminComment comment, @PathVariable Long id) throws AdminCommentNotFoundException {
-        commentService.updateAdminComment(comment, id);
+    public ResponseEntity<HttpStatus> updateComment(@RequestBody RequestComment comment, @PathVariable Long id)
+            throws AdminCommentNotFoundException, ApplicationNotFoundException, UserNotFoundException {
+        AdminComment adminComment = new AdminComment(comment.getComment(), comment.getDate(),
+                applicationService.getById(comment.getApplicationId()), userService.getById(comment.getAuthorId()));
+        commentService.updateAdminComment(adminComment, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

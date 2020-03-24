@@ -39,6 +39,7 @@ create table admin_comments (
     application_id bigint not null,
     comment varchar(1500) not null,
     comment_date date not null,
+    date_modified date,
     foreign key (user_id) references user(id)
         on update no action
         on delete cascade,
@@ -53,4 +54,4 @@ INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freet
     'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'nauja');
 insert into user_roles values (1, 'USER', 1);
 insert into user_roles values (2, 'ADMIN', 2);
-insert into admin_comments values (1, 2, 1, 'test comment aaaaaaaaaaaaaaaa', TO_DATE('2020-03-20', 'YYYY-MM-DD'));
+insert into admin_comments values (1, 2, 1, 'test comment aaaaaaaaaaaaaaaa', TO_DATE('2020-03-20', 'YYYY-MM-DD'), null );
