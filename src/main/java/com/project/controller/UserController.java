@@ -3,12 +3,14 @@ package com.project.controller;
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
+import com.project.model.response.UserResponse;
 import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,14 +26,22 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> fetchUsers() {
+    public ResponseEntity<List<UserResponse>> fetchUsers() {
         List<User> users = userService.getAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        List<UserResponse> response = new ArrayList<>();
+
+        for(User user : users) {
+            response.add(new UserResponse(user.getEmail(), user.getFullName()));
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<User> fetchUser(@PathVariable long id) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
+    ResponseEntity<UserResponse> fetchUser(@PathVariable long id) throws UserNotFoundException {
+        User user = userService.getById(id);
+        UserResponse response = new UserResponse(user.getEmail(), user.getFullName());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping

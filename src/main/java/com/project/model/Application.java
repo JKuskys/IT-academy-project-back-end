@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,11 +19,6 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank(message = "Vardas negali būti tuščias")
-    @Size(max = 255, message = "Vardas negali būti ilgesnis nei 255 simboliai")
-    @Column(name = "full_name")
-    private String fullName;
 
     @NotBlank(message = "Telefono numeris negali būti tuščias")
     @Size(max = 20, message = "Telefono numeris negali būti ilgesnis nei 20 simbolių")
@@ -71,7 +67,7 @@ public class Application {
     private String applicationDate;
 
     @Column(name = "status")
-    private String status;
+    private ApplicationStatus status;
 
     @OneToMany(mappedBy = "application")
     private List<AdminComment> comments;
@@ -82,4 +78,21 @@ public class Application {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    public Application(String phoneNumber, String education, String hobbies, boolean agreementNeeded, String comment,
+                           boolean academyTimeSuitable, String reason, String technologies, String source, String applicationDate,
+                           ApplicationStatus status, ArrayList<AdminComment> comments, User user) {
+        this.phoneNumber = phoneNumber;
+        this.education = education;
+        this.hobbies = hobbies;
+        this.isAgreementNeeded = agreementNeeded;
+        this.comment = comment;
+        this.isAcademyTimeSuitable = academyTimeSuitable;
+        this.reason = reason;
+        this.technologies = technologies;
+        this.source = source;
+        this.applicationDate = applicationDate;
+        this.status = status;
+        this.comments = comments;
+        this.user = user;
+    }
 }

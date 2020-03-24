@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +39,11 @@ public class User implements UserDetails {
     @NotBlank
     @Column(name = "password")
     private String password;
+
+    @NotBlank(message = "Vardas negali būti tuščias")
+    @Size(max = 255, message = "Vardas negali būti ilgesnis nei 255 simboliai")
+    @Column(name = "full_name")
+    private String fullName;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

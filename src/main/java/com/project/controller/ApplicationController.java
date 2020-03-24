@@ -3,6 +3,7 @@ package com.project.controller;
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserException;
 import com.project.model.Application;
+import com.project.model.request.ApplicationRequest;
 import com.project.model.response.ApplicationResponse;
 import com.project.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ApplicationController {
 
         for (Application app : applications) {
             response.add(new ApplicationResponse(
-                    app.getId(), app.getFullName(), app.getPhoneNumber(), app.getEducation(), app.getHobbies(), app.isAgreementNeeded(),
+                    app.getId(), app.getUser().getFullName(),app.getPhoneNumber(), app.getEducation(), app.getHobbies(), app.isAgreementNeeded(),
                     app.getComment(), app.isAcademyTimeSuitable(), app.getReason(), app.getTechnologies(), app.getSource(), app.getApplicationDate(),
                     app.getUser().getEmail(), app.getComments().size(), app.getStatus())
             );
@@ -45,7 +46,7 @@ public class ApplicationController {
     public ResponseEntity<ApplicationResponse> fetchApplication(@PathVariable long id) throws ApplicationNotFoundException {
         Application app = applicationService.getById(id);
         ApplicationResponse response = new ApplicationResponse(
-                app.getId(), app.getFullName(), app.getPhoneNumber(), app.getEducation(), app.getHobbies(), app.isAgreementNeeded(),
+                app.getId(), app.getUser().getFullName(), app.getPhoneNumber(), app.getEducation(), app.getHobbies(), app.isAgreementNeeded(),
                 app.getComment(), app.isAcademyTimeSuitable(), app.getReason(), app.getTechnologies(), app.getSource(), app.getApplicationDate(),
                 app.getUser().getEmail(), app.getComments().size(), app.getStatus());
 
@@ -53,7 +54,7 @@ public class ApplicationController {
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createApplication(@Valid @RequestBody Application application) throws UserException, ApplicationNotFoundException {
+    ResponseEntity<HttpStatus> createApplication(@Valid @RequestBody ApplicationRequest application) throws UserException, ApplicationNotFoundException {
         applicationService.addApplication(application);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
