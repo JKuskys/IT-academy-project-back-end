@@ -1,24 +1,24 @@
 CREATE TABLE user (
     id bigint PRIMARY KEY AUTO_INCREMENT,
     email varchar(255) NOT NULL,
-    password varchar(255) NOT NULL
+    password varchar(255) NOT NULL,
+    full_name varchar(255) NOT NULL
 );
 
 CREATE TABLE application (
     id bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
     user_id bigint NOT NULL,
-    full_name varchar(255) NOT NULL,
     phone_number varchar(20) NOT NULL,
     education varchar(255) NOT NULL,
     free_time varchar(1500) NOT NULL,
     agreement boolean NOT NULL,
-    comment varchar(1500) NOT NULL,
+    comment varchar(1500),
     academy_time boolean NOT NULL,
     reason varchar(1500) NOT NULL,
     technologies varchar(1500) NOT NULL,
     source varchar(255) NOT NULL,
     application_date date NOT NULL,
-    status varchar(30) default 'nauja' check(status in ('nauja', 'peržiūrėta', 'atmesta', 'priimta')),
+    status ENUM ('NAUJA', 'PERZIURETA', 'POTENCIALUS', 'ATMESTA', 'PRIIMTA') default 'NAUJA',
     FOREIGN KEY (user_id) REFERENCES user(id)
         ON UPDATE NO ACTION
         ON DELETE CASCADE
@@ -27,8 +27,7 @@ CREATE TABLE application (
 CREATE table user_roles (
     id bigint not null primary key AUTO_INCREMENT,
     roles varchar(20) NOT NULL default 'USER' check(roles in ('ADMIN', 'USER')),
-    user_id bigint NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(id)
+    user_id bigint NOT NULL,    FOREIGN KEY (user_id) REFERENCES user(id)
         ON UPDATE NO ACTION
         ON DELETE CASCADE
 );
@@ -48,10 +47,10 @@ create table admin_comments (
         on delete cascade
 );
 
-INSERT INTO user values (1, 'testas@mail.com', '$2a$10$KYQpdsE94e8xY76SVz8aauXYj7RSi3vKQmZXRrMNpZSiXx9wt8QJm');
-INSERT INTO user values (2, 'test@testmail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS');
-INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freetime', true,
-    'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'nauja');
+INSERT INTO user values (1, 'testas@mail.com', '$2a$10$KYQpdsE94e8xY76SVz8aauXYj7RSi3vKQmZXRrMNpZSiXx9wt8QJm', 'testas');
+INSERT INTO user values (2, 'test@testmail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'mr. test');
+INSERT INTO application values (1, 1, 'phonenumber', 'education', 'freetime', true,
+    'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'NAUJA');
 insert into user_roles values (1, 'USER', 1);
 insert into user_roles values (2, 'ADMIN', 2);
 insert into admin_comments values (1, 2, 1, 'test comment aaaaaaaaaaaaaaaa', TO_DATE('2020-03-20', 'YYYY-MM-DD'), null );

@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
                 .map(existingUser -> {
                     existingUser.setEmail(user.getEmail());
                     existingUser.setPassword(user.getPassword());
+                    existingUser.setFullName(user.getFullName());
                     return userRepository.save(existingUser);
                 })
                 .orElse(null);
