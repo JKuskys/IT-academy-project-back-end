@@ -18,8 +18,7 @@ CREATE TABLE application (
     technologies varchar(1500) NOT NULL,
     source varchar(255) NOT NULL,
     application_date date NOT NULL,
-    view_status varchar(30) default 'nauja',
-    acceptance_status varchar(30) default null,
+    status varchar(30) default 'nauja' check(status in ('nauja', 'peržiūrėta', 'atmesta', 'priimta')),
     FOREIGN KEY (user_id) REFERENCES user(id)
         ON UPDATE NO ACTION
         ON DELETE CASCADE
@@ -51,7 +50,7 @@ create table admin_comments (
 INSERT INTO user values (1, 'testas@mail.com', '$2a$10$KYQpdsE94e8xY76SVz8aauXYj7RSi3vKQmZXRrMNpZSiXx9wt8QJm');
 INSERT INTO user values (2, 'test@testmail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS');
 INSERT INTO application values (1, 1, 'name', 'phonenumber', 'education', 'freetime', true,
-    'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'nauja', null);
+    'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'nauja');
 insert into user_roles values (1, 'USER', 1);
 insert into user_roles values (2, 'ADMIN', 2);
 insert into admin_comments values (1, 2, 1, 'test comment aaaaaaaaaaaaaaaa', TO_DATE('2020-03-20', 'YYYY-MM-DD'));

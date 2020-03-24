@@ -1,18 +1,17 @@
 package com.project.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "application")
 public class Application {
 
@@ -71,11 +70,11 @@ public class Application {
     @Column(name = "application_date")
     private String applicationDate;
 
-    @Column(name = "view_status")
-    private String viewStatus;
+    @Column(name = "status")
+    private String status;
 
-    @Column(name = "acceptance_status")
-    private String acceptanceStatus;
+    @OneToMany(mappedBy = "application")
+    private List<AdminComment> comments;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

@@ -3,6 +3,7 @@ package com.project.controller;
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserException;
 import com.project.model.Application;
+import com.project.model.response.ApplicationResponse;
 import com.project.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,13 +26,30 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Application>> fetchApplications() {
-        return new ResponseEntity<>(applicationService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<ApplicationResponse>> fetchApplications() {
+        List<Application> applications = applicationService.getAll();
+        List<ApplicationResponse> response = new ArrayList<>();
+
+        for (Application app : applications) {
+            response.add(new ApplicationResponse(
+                    app.getId(), app.getFullName(), app.getPhoneNumber(), app.getEducation(), app.getHobbies(), app.isAgreementNeeded(),
+                    app.getComment(), app.isAcademyTimeSuitable(), app.getReason(), app.getTechnologies(), app.getSource(), app.getApplicationDate(),
+                    app.getUser().getEmail(), app.getComments().size(), app.getStatus())
+            );
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Application> fetchApplication(@PathVariable long id) throws ApplicationNotFoundException {
-        return new ResponseEntity<>(applicationService.getById(id), HttpStatus.OK);
+    public ResponseEntity<ApplicationResponse> fetchApplication(@PathVariable long id) throws ApplicationNotFoundException {
+        Application app = applicationService.getById(id);
+        ApplicationResponse response = new ApplicationResponse(
+                app.getId(), app.getFullName(), app.getPhoneNumber(), app.getEducation(), app.getHobbies(), app.isAgreementNeeded(),
+                app.getComment(), app.isAcademyTimeSuitable(), app.getReason(), app.getTechnologies(), app.getSource(), app.getApplicationDate(),
+                app.getUser().getEmail(), app.getComments().size(), app.getStatus());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -48,14 +49,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public Application updateApplication(Application application, long id) throws ApplicationNotFoundException {
-        if (!applicationRepository.findById(id).isPresent()) {
+        Optional<Application> existingApplication = applicationRepository.findById(id);
+
+        if (!existingApplication.isPresent()) {
             throw new ApplicationNotFoundException(id);
         }
 
-        return applicationRepository.findById(id)
-                .map(existingApplication -> {
-                    // TODO add proper update functionality
-                    return applicationRepository.save(existingApplication);
+        return existingApplication
+                .map(existingApp -> {
+                    existingApp.setStatus(application.getStatus());
+                    return applicationRepository.save(existingApp);
                 })
                 .orElse(null);
     }
