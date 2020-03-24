@@ -71,9 +71,16 @@ public class Application {
     @Column(name = "application_date")
     private String applicationDate;
 
+    @Column(name = "view_status")
+    private String viewStatus;
+
+    @Column(name = "acceptance_status")
+    private String acceptanceStatus;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
 }
