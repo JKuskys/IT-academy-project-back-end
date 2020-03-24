@@ -24,7 +24,7 @@ public class ApplicationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Application>> fetchAllApplications() {
+    public ResponseEntity<List<Application>> fetchApplications() {
         List<Application> list = applicationService.getAll();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
