@@ -7,6 +7,7 @@ import com.project.model.User;
 import com.project.repository.UserRepository;
 import com.project.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,15 +40,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByEmail(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+    }
+
+    @Override
     public User addUser(User user) throws UserException {
         userValidator.validate(user);
+
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new UserEmailExistsException(user.getEmail());
+        }
 
         user.setId(null);
 
         user.setPassword(bcryptEncoder.encode(user.getPassword()));
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new UserEmailExistsException(user.getEmail());
-        }
 
         List<String> roles = new ArrayList<>();
         roles.add("USER");
@@ -73,6 +80,7 @@ public class UserServiceImpl implements UserService {
                 .map(existingUser -> {
                     existingUser.setEmail(user.getEmail());
                     existingUser.setPassword(user.getPassword());
+                    existingUser.setFullName(user.getFullName());
                     return userRepository.save(existingUser);
                 })
                 .orElse(null);

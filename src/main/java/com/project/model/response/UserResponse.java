@@ -9,14 +9,9 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentResponse implements Serializable {
-    private long id;
+public class UserResponse implements Serializable {
 
-    private String comment;
+    private String email;
 
-    private String author;
-
-    private String commentDate;
-
-    private String dateModified;
+    private String fullName;
 }

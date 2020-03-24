@@ -1,20 +1,14 @@
-package com.project.model.response;
+package com.project.model.request;
 
-import com.project.model.ApplicationStatus;
+import com.project.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationResponse implements Serializable {
-
-    private Long id;
-
-    private String fullName;
+@AllArgsConstructor
+public class ApplicationRequest {
 
     private String phoneNumber;
 
@@ -36,9 +30,5 @@ public class ApplicationResponse implements Serializable {
 
     private String applicationDate;
 
-    private String email;
-
-    private int commentCount;
-
-    private ApplicationStatus status;
+    private User user;
 }
