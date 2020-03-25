@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -28,11 +29,10 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserResponse>> fetchUsers() {
         List<User> users = userService.getAll();
-        List<UserResponse> response = new ArrayList<>();
 
-        for(User user : users) {
-            response.add(new UserResponse(user.getEmail(), user.getFullName()));
-        }
+        List<UserResponse> response = users.stream().map(user -> new UserResponse(
+                user.getEmail(), user.getFullName()
+        )).collect(Collectors.toList());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

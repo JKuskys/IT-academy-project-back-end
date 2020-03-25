@@ -13,7 +13,7 @@ public class CommentRequest {
 
     private String commentDate;
 
-    private long applicationId;
+    private String author;
 
     private String authorEmail;
 }
