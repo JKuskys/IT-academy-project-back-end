@@ -18,9 +18,6 @@ public class CommentRequest {
     @NotBlank(message = "Komentaro data negali būti tuščia")
     private String commentDate;
 
-    @NotBlank(message = "Komentaro autorius negali būti nenurodytas")
-    private String author;
-
     @NotBlank(message = "Komentaro autoriaus elektroninis paštas negali būti nenurodytas")
     private String authorEmail;
 }
