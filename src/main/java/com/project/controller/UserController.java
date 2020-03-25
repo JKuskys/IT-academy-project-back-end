@@ -2,7 +2,9 @@ package com.project.controller;
 
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
+import com.project.model.Application;
 import com.project.model.User;
+import com.project.model.response.ApplicationResponse;
 import com.project.model.response.UserResponse;
 import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,8 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserResponse>> fetchUsers() {
         List<User> users = userService.getAll();
-
-        List<UserResponse> response = users.stream().map(user -> new UserResponse(
-                user.getEmail(), user.getFullName()
-        )).collect(Collectors.toList());
-
+        List<UserResponse> response = users.stream().map(user -> new UserResponse(user.getEmail(), user.getFullName()))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -41,6 +40,13 @@ public class UserController {
     ResponseEntity<UserResponse> fetchUser(@PathVariable long id) throws UserNotFoundException {
         User user = userService.getById(id);
         UserResponse response = new UserResponse(user.getEmail(), user.getFullName());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/application")
+    public ResponseEntity<ApplicationResponse> fetchUserApplication(@RequestBody String email) throws UserNotFoundException {
+        Application app = userService.getByEmail(email).getApplication();
+        ApplicationResponse response = new ApplicationResponse(app);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
