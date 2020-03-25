@@ -19,6 +19,6 @@ public class EmailValidator extends Validator<String> {
         Matcher matcher = pattern.matcher(attribute.trim());
 
         if(!matcher.matches())
-            throw new ValidationException(message + " yra netinkamas");
+            throw new ValidationException(String.format("%s yra netinkamas", message));
     }
 }

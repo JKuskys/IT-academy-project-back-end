@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class UserNotFoundException extends UserException {
     public UserNotFoundException(long id) {
-        super("Vartotojas su nurodytu identifikatoriumi (" + id + ") neegzistuoja.");
+        super(String.format("Vartotojas su nurodytu identifikatoriumi (%d) neegzistuoja.", id));
     }
 }

@@ -21,11 +21,9 @@ public class AdminComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 1500, message = "Komentaras negali būti ilgesnis nei 1500 simboliai")
     @Column(name = "comment")
     private String comment;
 
-    @NotBlank(message = "Komentaro data negali būti tuščia")
     @Column(name = "comment_date")
     private String commentDate;
 

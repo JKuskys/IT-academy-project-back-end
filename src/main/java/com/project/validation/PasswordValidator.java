@@ -19,7 +19,6 @@ public class PasswordValidator extends Validator<String> {
         Matcher matcher = pattern.matcher(attribute.trim());
 
         if(!matcher.matches())
-            throw new ValidationException(message
-                    + " turi būti tarp 7 ir 30 simbolių, turėti bent vieną didžiąją raidę ir skaičių");
+            throw new ValidationException(String.format("%s turi būti tarp 7 ir 30 simbolių, turėti bent vieną didžiąją raidę ir skaičių", message));
     }
 }

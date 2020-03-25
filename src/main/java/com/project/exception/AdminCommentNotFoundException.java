@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class AdminCommentNotFoundException extends Exception {
     public AdminCommentNotFoundException(long id) {
-        super("Komentaras su nurodytu identifikatoriumi (" + id + ") neegzistuoja.");
+        super(String.format("Komentaras su nurodytu identifikatoriumi (%d) neegzistuoja.", id));
     }
 }
