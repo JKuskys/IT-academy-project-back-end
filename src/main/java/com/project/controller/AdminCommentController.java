@@ -58,20 +58,31 @@ public class AdminCommentController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody CommentRequest comment, @PathVariable("appId") long appId) throws ApplicationNotFoundException, UserNotFoundException {
+    public ResponseEntity<CommentResponse> createComment(@Valid @RequestBody CommentRequest comment, @PathVariable("appId") long appId)
+            throws ApplicationNotFoundException, UserNotFoundException {
+
         AdminComment adminComment = new AdminComment(comment.getComment(), comment.getCommentDate(),
                 applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()));
         commentService.addAdminComment(adminComment);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+
+        CommentResponse response = new CommentResponse(adminComment.getId(), adminComment.getComment(), adminComment.getAuthor().getFullName(),
+                adminComment.getAuthor().getEmail(), adminComment.getCommentDate(), adminComment.getDateModified());
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateComment(@RequestBody CommentRequest comment, @PathVariable("id") Long id, @PathVariable("appId") long appId)
+    public ResponseEntity<CommentResponse> updateComment(@RequestBody CommentRequest comment, @PathVariable("id") Long id, @PathVariable("appId") long appId)
             throws AdminCommentNotFoundException, ApplicationNotFoundException, UserNotFoundException {
+
         AdminComment adminComment = new AdminComment(comment.getComment(), comment.getCommentDate(),
                 applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()));
         commentService.updateAdminComment(adminComment, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        CommentResponse response = new CommentResponse(adminComment.getId(), adminComment.getComment(), adminComment.getAuthor().getFullName(),
+                adminComment.getAuthor().getEmail(), adminComment.getCommentDate(), adminComment.getDateModified());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
