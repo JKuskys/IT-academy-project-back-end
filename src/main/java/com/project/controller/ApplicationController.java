@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,15 +30,12 @@ public class ApplicationController {
     @GetMapping
     public ResponseEntity<List<ApplicationResponse>> fetchApplications() {
         List<Application> applications = applicationService.getAll();
-        List<ApplicationResponse> response = new ArrayList<>();
 
-        for (Application app : applications) {
-            response.add(new ApplicationResponse(
-                    app.getId(), app.getUser().getFullName(),app.getPhoneNumber(), app.getEducation(), app.getHobbies(), app.isAgreementNeeded(),
-                    app.getComment(), app.isAcademyTimeSuitable(), app.getReason(), app.getTechnologies(), app.getSource(), app.getApplicationDate(),
-                    app.getUser().getEmail(), app.getComments().size(), app.getStatus())
-            );
-        }
+        List<ApplicationResponse> response = applications.stream().map(app -> new ApplicationResponse(
+                app.getId(), app.getUser().getFullName(), app.getPhoneNumber(), app.getEducation(), app.getHobbies(),
+                app.isAgreementNeeded(), app.getComment(), app.isAcademyTimeSuitable(), app.getReason(), app.getTechnologies(),
+                app.getSource(), app.getApplicationDate(), app.getUser().getEmail(), app.getComments().size(), app.getStatus()
+        )).collect(Collectors.toList());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

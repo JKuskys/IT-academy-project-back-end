@@ -1,6 +1,7 @@
 package com.project.controller;
 
-import com.project.model.AuthenticationRequest;
+import com.project.model.request.AuthenticationRequest;
+import com.project.model.response.AuthenticationResponse;
 import com.project.repository.UserRepository;
 import com.project.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthenticationRequest data) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest data) {
         try {
             String email = data.getEmail();
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, data.getPassword()));
@@ -46,9 +47,7 @@ public class AuthenticationController {
             String token = jwtTokenProvider.createToken(email, this.users.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("Neteisingas vartotojo paštas arba slaptažodis"))
                     .getRoles());
-            Map<Object, Object> model = new HashMap<>();
-            model.put("email", email);
-            model.put("token", token);
+            AuthenticationResponse model = new AuthenticationResponse(email, token);
             return ok(model);
         } catch (AuthenticationException ex) {
             throw new BadCredentialsException("Neteisingas vartotojo paštas arba slaptažodis");

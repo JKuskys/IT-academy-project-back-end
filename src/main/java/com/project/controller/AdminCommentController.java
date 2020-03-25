@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("api/comments")
+@RequestMapping("api/applications/{appId}/comments")
 public class AdminCommentController {
     private final AdminCommentService commentService;
     private final ApplicationService applicationService;
@@ -34,41 +36,40 @@ public class AdminCommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentResponse>> fetchComments() {
+    public ResponseEntity<List<CommentResponse>> fetchComments(@PathVariable("appId") long appId) {
         List<AdminComment> comments = commentService.getAll();
-        List<CommentResponse> response = new ArrayList<>();
 
-        for(AdminComment comment: comments) {
-            response.add(new CommentResponse(comment.getId(), comment.getComment(), comment.getAuthor().getEmail(),
-                    comment.getCommentDate(), comment.getDateModified()));
-        }
+        List<CommentResponse> response = comments.stream().filter(comment -> comment.getApplication().getId() == appId).map(comment -> new CommentResponse(
+                comment.getId(), comment.getComment(), comment.getAuthor().getFullName(),
+                comment.getAuthor().getEmail(), comment.getCommentDate(), comment.getDateModified()
+        )).collect(Collectors.toList());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentResponse> fetchComment(@PathVariable Long id) throws AdminCommentNotFoundException {
+    public ResponseEntity<CommentResponse> fetchComment(@PathVariable("id") Long id) throws AdminCommentNotFoundException {
         AdminComment comment = commentService.getById(id);
-        return new ResponseEntity<>(
-                new CommentResponse(comment.getId(), comment.getComment(), comment.getAuthor().getEmail(),
-                        comment.getCommentDate(), comment.getDateModified()),
+        return new ResponseEntity<>(new CommentResponse(
+                    comment.getId(), comment.getComment(), comment.getAuthor().getFullName(),
+                    comment.getAuthor().getEmail(), comment.getCommentDate(), comment.getDateModified()),
                 HttpStatus.OK
         );
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody CommentRequest comment) throws ApplicationNotFoundException, UserNotFoundException {
+    public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody CommentRequest comment, @PathVariable("appId") long appId) throws ApplicationNotFoundException, UserNotFoundException {
         AdminComment adminComment = new AdminComment(comment.getComment(), comment.getCommentDate(),
-                applicationService.getById(comment.getApplicationId()), userService.getByEmail(comment.getAuthorEmail()));
+                applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()));
         commentService.addAdminComment(adminComment);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateComment(@RequestBody CommentRequest comment, @PathVariable Long id)
+    public ResponseEntity<HttpStatus> updateComment(@RequestBody CommentRequest comment, @PathVariable("id") Long id, @PathVariable("appId") long appId)
             throws AdminCommentNotFoundException, ApplicationNotFoundException, UserNotFoundException {
         AdminComment adminComment = new AdminComment(comment.getComment(), comment.getCommentDate(),
-                applicationService.getById(comment.getApplicationId()), userService.getByEmail(comment.getAuthorEmail()));
+                applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()));
         commentService.updateAdminComment(adminComment, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
