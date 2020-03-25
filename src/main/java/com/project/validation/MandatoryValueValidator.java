@@ -6,6 +6,6 @@ public class MandatoryValueValidator extends Validator<String> {
     @Override
     public void validate(String attribute, String message) {
         if(attribute == null || attribute.trim().isEmpty())
-            throw new ValidationException(message +" yra privalomas");
+            throw new ValidationException(String.format("%s yra privalomas", message));
     }
 }
