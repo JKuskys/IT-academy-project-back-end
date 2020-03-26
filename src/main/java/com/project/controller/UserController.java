@@ -44,7 +44,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/application")
+    @PostMapping("/application")
     public ResponseEntity<ApplicationResponse> fetchUserApplication(@RequestBody UserCommentRequest email) throws UserNotFoundException {
         Application app = userService.getByEmail(email.getEmail()).getApplication();
         ApplicationResponse response = new ApplicationResponse(app);
