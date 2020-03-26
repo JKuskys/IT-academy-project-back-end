@@ -36,7 +36,7 @@ public class ApplicationRequest {
     private boolean isAcademyTimeSuitable;
 
     @NotBlank(message = "Dalyvavimo akademijoje priežastis negali būti tuščia")
-    @Size(max = 255, message = "Dalyvavimo akademijoje priežastis negali būti ilgesnė nei 1500 simboliai")
+    @Size(max = 1500, message = "Dalyvavimo akademijoje priežastis negali būti ilgesnė nei 1500 simboliai")
     private String reason;
 
     @NotBlank(message = "Technologijų ir patirties laukas negali būti tuščias")

@@ -45,6 +45,9 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
+    @OneToOne(mappedBy = "user")
+    private Application application;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();

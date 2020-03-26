@@ -30,11 +30,7 @@ public class ApplicationController {
     public ResponseEntity<List<ApplicationResponse>> fetchApplications() {
         List<Application> applications = applicationService.getAll();
 
-        List<ApplicationResponse> response = applications.stream().map(app -> new ApplicationResponse(
-                app.getId(), app.getUser().getFullName(), app.getPhoneNumber(), app.getEducation(), app.getHobbies(),
-                app.isAgreementNeeded(), app.getComment(), app.isAcademyTimeSuitable(), app.getReason(), app.getTechnologies(),
-                app.getSource(), app.getApplicationDate(), app.getUser().getEmail(), app.getComments().size(), app.getStatus()
-        )).collect(Collectors.toList());
+        List<ApplicationResponse> response = applications.stream().map(ApplicationResponse::new).collect(Collectors.toList());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -42,10 +38,7 @@ public class ApplicationController {
     @GetMapping("/{id}")
     public ResponseEntity<ApplicationResponse> fetchApplication(@PathVariable long id) throws ApplicationNotFoundException {
         Application app = applicationService.getById(id);
-        ApplicationResponse response = new ApplicationResponse(
-                app.getId(), app.getUser().getFullName(), app.getPhoneNumber(), app.getEducation(), app.getHobbies(), app.isAgreementNeeded(),
-                app.getComment(), app.isAcademyTimeSuitable(), app.getReason(), app.getTechnologies(), app.getSource(), app.getApplicationDate(),
-                app.getUser().getEmail(), app.getComments().size(), app.getStatus());
+        ApplicationResponse response = new ApplicationResponse(app);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
