@@ -47,10 +47,30 @@ create table admin_comments (
         on delete cascade
 );
 
-INSERT INTO user values (1, 'testas@mail.com', '$2a$10$KYQpdsE94e8xY76SVz8aauXYj7RSi3vKQmZXRrMNpZSiXx9wt8QJm', 'testas');
-INSERT INTO user values (2, 'test@testmail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'mr. test');
-INSERT INTO application values (1, 1, 'phonenumber', 'education', 'freetime', true,
-    'comment', true, 'reason', 'tech', 'sauce', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'NAUJA');
-insert into user_roles values (1, 'USER', 1);
+INSERT INTO user values (1, 'admin@mail.com', '$2a$10$KYQpdsE94e8xY76SVz8aauXYj7RSi3vKQmZXRrMNpZSiXx9wt8QJm', 'Monika Kopaitė');
+INSERT INTO user values (2, 'admin@admin.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Linas Tomkus');
+INSERT INTO user values (3, 'urte.ruk@mail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Urtė Rukaitė');
+INSERT INTO user values (4, 'arturas.lin@mail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Artūras Linaukas');
+INSERT INTO user values (5, 'simonasjankevicius@mail.lt', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Simonas Jankevičius');
+
+INSERT INTO application values (1, 3, '+37067712456', 'VU', 'Mėgstu skaityti knygas, keliauti', true,
+    '', true, 'Noriu daug išmokti', 'Mėgstu įvairias web technologijas', 'Iš facebook', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'POTENCIALUS');
+INSERT INTO application values (2, 4, '+37060982454', 'Kauno technologijos universitetas', 'Mėgstu žaisti kompiuteriu, važinėtis dviračiu', false,
+    'nežinau kur kreiptis', true, 'Noriu mokytis iš profesionalų', 'Man labai patinka big data, mokiausi principų savarankiškai', 'Iš draugų',
+    TO_DATE('2020-03-21', 'YYYY-MM-DD'), 'PERZIURETA');
+INSERT INTO application values (3, 5, '+37060482000', 'VGTU', 'Programuoju', true, '', true,
+    'Noriu išmokti naujų dalykų', 'Šiaip daug mokausi savarankiškai, daugiausiai įvairios web technologijos', 'Iš draugo',
+    TO_DATE('2020-03-26', 'YYYY-MM-DD'), 'NAUJA');
+
+insert into user_roles values (1, 'ADMIN', 1);
 insert into user_roles values (2, 'ADMIN', 2);
-insert into admin_comments values (1, 2, 1, 'test comment aaaaaaaaaaaaaaaa', TO_DATE('2020-03-20', 'YYYY-MM-DD'), null );
+insert into user_roles values (3, 'USER', 3);
+insert into user_roles values (4, 'USER', 4);
+insert into user_roles values (5, 'USER', 5);
+
+insert into admin_comments values (1, 1, 1, 'Visai neblogai atrodo', TO_DATE('2020-03-24', 'YYYY-MM-DD'), null );
+insert into admin_comments values (2, 2, 1, 'Galėjo apie technologjas plačiau', TO_DATE('2020-03-25', 'YYYY-MM-DD'), null );
+insert into admin_comments values (3, 1, 2, 'Reikėtų susisiekti dėl tos sutarties, žmogus nežino tvarkos matyt',
+    TO_DATE('2020-03-23', 'YYYY-MM-DD'), null );
+insert into admin_comments values (4, 2, 2, 'Šiaip atrodo neblogai',
+    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null );
