@@ -4,6 +4,7 @@ import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
 import com.project.model.User;
+import com.project.model.request.UserCommentRequest;
 import com.project.model.response.ApplicationResponse;
 import com.project.model.response.UserResponse;
 import com.project.service.UserService;
@@ -44,8 +45,8 @@ public class UserController {
     }
 
     @GetMapping("/application")
-    public ResponseEntity<ApplicationResponse> fetchUserApplication(@RequestBody String email) throws UserNotFoundException {
-        Application app = userService.getByEmail(email).getApplication();
+    public ResponseEntity<ApplicationResponse> fetchUserApplication(@RequestBody UserCommentRequest email) throws UserNotFoundException {
+        Application app = userService.getByEmail(email.getEmail()).getApplication();
         ApplicationResponse response = new ApplicationResponse(app);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
