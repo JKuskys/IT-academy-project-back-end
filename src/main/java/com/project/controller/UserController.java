@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<UserResponse> fetchUser(@PathVariable long id) throws UserNotFoundException {
+    ResponseEntity<UserResponse> fetchUser(@PathVariable Long id) throws UserNotFoundException {
         User user = userService.getById(id);
         UserResponse response = new UserResponse(user.getEmail(), user.getFullName());
         return new ResponseEntity<>(response, HttpStatus.OK);

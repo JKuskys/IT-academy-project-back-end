@@ -36,7 +36,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApplicationResponse> fetchApplication(@PathVariable long id) throws ApplicationNotFoundException {
+    public ResponseEntity<ApplicationResponse> fetchApplication(@PathVariable Long id) throws ApplicationNotFoundException {
         Application app = applicationService.getById(id);
         ApplicationResponse response = new ApplicationResponse(app);
 

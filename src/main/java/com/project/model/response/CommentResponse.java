@@ -10,7 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentResponse implements Serializable {
-    private long id;
+    private Long id;
 
     private String comment;
 
