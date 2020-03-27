@@ -4,6 +4,9 @@ import com.project.exception.UserEmailExistsException;
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
+import com.project.model.UserRoles;
+import com.project.model.request.UserRequest;
+import com.project.model.response.UserResponse;
 import com.project.repository.UserRepository;
 import com.project.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,12 +34,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
-        return new ArrayList<>(userRepository.findAll());
+    public List<UserResponse> getAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(UserResponse::new).collect(Collectors.toList());
     }
 
     @Override
-    public User getById(final long id) throws UserNotFoundException {
+    public User getById(final Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
@@ -45,26 +50,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(User user) throws UserException {
-        userValidator.validate(user);
+    public User addUser(UserRequest userRequest) throws UserException {
+        userValidator.validate(userRequest);
 
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new UserEmailExistsException(user.getEmail());
+        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            throw new UserEmailExistsException(userRequest.getEmail());
         }
 
-        user.setId(null);
+        userRequest.setPassword(bcryptEncoder.encode(userRequest.getPassword()));
 
-        user.setPassword(bcryptEncoder.encode(user.getPassword()));
+        User user = new User(userRequest);
 
         List<String> roles = new ArrayList<>();
-        roles.add("USER");
+        roles.add(UserRoles.USER.toString());
         user.setRoles(roles);
 
         return userRepository.save(user);
     }
 
     @Override
-    public User updateUser(User user, long id) throws UserException {
+    public UserResponse updateUser(UserRequest user, Long id) throws UserException {
         if (!userRepository.findById(id).isPresent()) {
             throw new UserNotFoundException(id);
         }
@@ -72,18 +77,18 @@ public class UserServiceImpl implements UserService {
         userValidator.validate(user);
 
         if (userRepository.findByEmail(user.getEmail()).isPresent()
-                && userRepository.findByEmail(user.getEmail()).get().getId() != id) {
+                && !userRepository.findByEmail(user.getEmail()).get().getId().equals(id)) {
             throw new UserEmailExistsException(user.getEmail());
         }
 
-        return userRepository.findById(id)
+        User response = userRepository.findById(id)
                 .map(existingUser -> {
                     existingUser.setEmail(user.getEmail());
                     existingUser.setPassword(user.getPassword());
                     existingUser.setFullName(user.getFullName());
                     return userRepository.save(existingUser);
-                })
-                .orElse(null);
+                }).get();
+        return new UserResponse(response);
     }
 
     @Override

@@ -18,18 +18,15 @@ import static io.jsonwebtoken.SignatureAlgorithm.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class JwtTokenProvider {
     @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey = "itacademy2020";
+    private String secretKey;
 
-    @Value("${security.jwt.token.expire-length:900000}")
-    private long validityInMilliseconds = 900000; // 15min sesijos trukme
+    @Value("${security.jwt.token.expire-length:900000}") // 15min sesijos trukme
+    private long validityInMilliseconds;
 
     private UserDetailsService userDetailsService;
 

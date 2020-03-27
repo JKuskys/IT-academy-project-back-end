@@ -1,5 +1,6 @@
 package com.project.model;
 
+import com.project.model.request.UserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -45,7 +44,7 @@ public class User implements UserDetails {
     @Column(name = "full_name")
     private String fullName;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "applicant")
     private Application application;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -80,5 +79,12 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User (UserRequest user) {
+        this.fullName = user.getFullName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.roles =  new ArrayList<>(Collections.singletonList(UserRoles.USER.toString()));
     }
 }

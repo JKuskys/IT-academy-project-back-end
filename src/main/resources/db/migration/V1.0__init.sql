@@ -26,7 +26,7 @@ CREATE TABLE application (
 
 CREATE table user_roles (
     id bigint not null primary key AUTO_INCREMENT,
-    roles varchar(20) NOT NULL default 'USER' check(roles in ('ADMIN', 'USER')),
+    roles ENUM ('ADMIN', 'USER') default 'USER',
     user_id bigint NOT NULL,    FOREIGN KEY (user_id) REFERENCES user(id)
         ON UPDATE NO ACTION
         ON DELETE CASCADE

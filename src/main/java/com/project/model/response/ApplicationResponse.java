@@ -45,7 +45,7 @@ public class ApplicationResponse implements Serializable {
 
     public ApplicationResponse (Application app) {
         this.id = app.getId();
-        this.fullName = app.getUser().getFullName();
+        this.fullName = app.getApplicant().getFullName();
         this.phoneNumber = app.getPhoneNumber();
         this.education = app.getEducation();
         this.hobbies = app.getHobbies();
@@ -56,7 +56,7 @@ public class ApplicationResponse implements Serializable {
         this.technologies = app.getTechnologies();
         this.source = app.getSource();
         this.applicationDate = app.getApplicationDate();
-        this.email = app.getUser().getEmail();
+        this.email = app.getApplicant().getEmail();
         this.commentCount = app.getComments().size();
         this.status = app.getStatus();
     }

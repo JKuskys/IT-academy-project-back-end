@@ -1,6 +1,5 @@
 package com.project.model.request;
 
-import com.project.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,5 +49,5 @@ public class ApplicationRequest {
     @NotBlank(message = "Paraiškos data negali būti tuščia")
     private String applicationDate;
 
-    private User user;
+    private UserRequest user;
 }

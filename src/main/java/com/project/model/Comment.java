@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -15,7 +13,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "admin_comments")
-public class AdminComment {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +36,7 @@ public class AdminComment {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    public AdminComment(String comment, String date, Application application, User user) {
+    public Comment(String comment, String date, Application application, User user) {
         this.comment = comment;
         this.commentDate = date;
         this.application = application;
