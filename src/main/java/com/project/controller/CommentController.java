@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.exception.AdminCommentNotFoundException;
+import com.project.exception.CommentNotFoundException;
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.request.CommentRequest;
@@ -31,7 +31,7 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentResponse> fetchComment(@PathVariable("id") Long id) throws AdminCommentNotFoundException {
+    public ResponseEntity<CommentResponse> fetchComment(@PathVariable("id") Long id) throws CommentNotFoundException {
         return new ResponseEntity<>(commentService.getById(id), HttpStatus.OK);
     }
 
@@ -44,13 +44,13 @@ public class CommentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponse> updateComment(@RequestBody CommentRequest comment, @PathVariable("id") Long id, @PathVariable("appId") Long appId)
-            throws AdminCommentNotFoundException {
+            throws CommentNotFoundException {
 
         return new ResponseEntity<>(commentService.updateAdminComment(comment, id, appId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteComment(@PathVariable Long id) throws AdminCommentNotFoundException {
+    public ResponseEntity<HttpStatus> deleteComment(@PathVariable Long id) throws CommentNotFoundException {
         commentService.deleteAdminComment(id);
         return ResponseEntity.noContent().build();
     }

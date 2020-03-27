@@ -1,6 +1,6 @@
 package com.project.service;
 
-import com.project.exception.AdminCommentNotFoundException;
+import com.project.exception.CommentNotFoundException;
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.Comment;
@@ -39,8 +39,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponse getById(Long id) throws AdminCommentNotFoundException {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new AdminCommentNotFoundException(id));
+    public CommentResponse getById(Long id) throws CommentNotFoundException {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
         return new CommentResponse(comment);
     }
 
@@ -55,7 +55,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResponse updateAdminComment(CommentRequest commentRequest, Long id, Long appId) throws AdminCommentNotFoundException {
+    public CommentResponse updateAdminComment(CommentRequest commentRequest, Long id, Long appId) throws CommentNotFoundException {
 
         return new CommentResponse(commentRepository.findById(id)
                 .map(existingComment -> {
@@ -63,13 +63,13 @@ public class CommentServiceImpl implements CommentService {
                     existingComment.setComment(commentRequest.getComment());
                     existingComment.setDateModified(dateFormat.format(new Date()));
                     return commentRepository.save(existingComment);
-                }).orElseThrow(() -> new AdminCommentNotFoundException(id)));
+                }).orElseThrow(() -> new CommentNotFoundException(id)));
     }
 
     @Override
-    public void deleteAdminComment(Long id) throws AdminCommentNotFoundException {
+    public void deleteAdminComment(Long id) throws CommentNotFoundException {
         if(!commentRepository.findById(id).isPresent()){
-            throw new AdminCommentNotFoundException(id);
+            throw new CommentNotFoundException(id);
         }
         commentRepository.deleteById(id);
     }
