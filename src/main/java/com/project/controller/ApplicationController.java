@@ -2,7 +2,6 @@ package com.project.controller;
 
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserException;
-import com.project.model.Application;
 import com.project.model.request.ApplicationRequest;
 import com.project.model.request.ApplicationUpdateRequest;
 import com.project.model.response.ApplicationResponse;

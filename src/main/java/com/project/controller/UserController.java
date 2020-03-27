@@ -3,7 +3,6 @@ package com.project.controller;
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
-import com.project.model.User;
 import com.project.model.request.UserCommentRequest;
 import com.project.model.request.UserRequest;
 import com.project.model.response.ApplicationResponse;
@@ -14,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")

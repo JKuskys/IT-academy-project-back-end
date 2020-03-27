@@ -85,6 +85,6 @@ public class User implements UserDetails {
         this.fullName = user.getFullName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.roles =  new ArrayList<>(Collections.singletonList("USER"));
+        this.roles =  new ArrayList<>(Collections.singletonList(UserRoles.USER.toString()));
     }
 }

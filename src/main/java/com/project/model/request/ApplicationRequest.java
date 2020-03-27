@@ -1,6 +1,5 @@
 package com.project.model.request;
 
-import com.project.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
