@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,31 +28,22 @@ public class ApplicationController {
 
     @GetMapping
     public ResponseEntity<List<ApplicationResponse>> fetchApplications() {
-        List<Application> applications = applicationService.getAll();
-
-        List<ApplicationResponse> response = applications.stream().map(ApplicationResponse::new).collect(Collectors.toList());
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(applicationService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApplicationResponse> fetchApplication(@PathVariable Long id) throws ApplicationNotFoundException {
-        Application app = applicationService.getById(id);
-        ApplicationResponse response = new ApplicationResponse(app);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new ApplicationResponse(applicationService.getById(id)), HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createApplication(@Valid @RequestBody ApplicationRequest application) throws UserException, ApplicationNotFoundException {
-        applicationService.addApplication(application);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    ResponseEntity<ApplicationResponse> createApplication(@Valid @RequestBody ApplicationRequest application) throws UserException {
+        return new ResponseEntity<>(applicationService.addApplication(application), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateApplication(@RequestBody ApplicationUpdateRequest application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
-        applicationService.updateApplication(application, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    ResponseEntity<ApplicationResponse> updateApplication(@RequestBody ApplicationUpdateRequest application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+        return new ResponseEntity<>(applicationService.updateApplication(application, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

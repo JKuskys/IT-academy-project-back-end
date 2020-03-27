@@ -1,5 +1,6 @@
 package com.project.model.response;
 
+import com.project.model.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,12 @@ public class CommentResponse implements Serializable {
 
     private String dateModified;
 
-    /*public CommentResponse () {
-
-    }*/
+    public CommentResponse (Comment comment) {
+        this.id = comment.getId();
+        this.comment = comment.getComment();
+        this.author = comment.getAuthor().getFullName();
+        this.authorEmail = comment.getAuthor().getEmail();
+        this.commentDate = comment.getCommentDate();
+        this.dateModified = comment.getDateModified();
+    }
 }

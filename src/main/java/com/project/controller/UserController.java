@@ -32,17 +32,12 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> fetchUsers() {
-        List<User> users = userService.getAll();
-        List<UserResponse> response = users.stream().map(user -> new UserResponse(user.getEmail(), user.getFullName()))
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<UserResponse> fetchUser(@PathVariable Long id) throws UserNotFoundException {
-        User user = userService.getById(id);
-        UserResponse response = new UserResponse(user.getEmail(), user.getFullName());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new UserResponse(userService.getById(id)), HttpStatus.OK);
     }
 
     @PostMapping("/application")
@@ -53,15 +48,13 @@ public class UserController {
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createUser(@RequestBody UserRequest user) throws UserException {
-        userService.addUser(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    ResponseEntity<UserResponse> createUser(@RequestBody UserRequest user) throws UserException {
+        return new ResponseEntity<>(new UserResponse(userService.addUser(user)), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateUser(@RequestBody UserRequest user, @PathVariable Long id) throws UserException {
-        userService.updateUser(user, id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest user, @PathVariable Long id) throws UserException {
+        return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

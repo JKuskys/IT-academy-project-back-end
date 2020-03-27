@@ -4,10 +4,6 @@ import com.project.model.request.ApplicationRequest;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -55,7 +51,7 @@ public class Application {
     private ApplicationStatus status;
 
     @OneToMany(mappedBy = "application")
-    private List<AdminComment> comments;
+    private List<Comment> comments;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -63,7 +59,7 @@ public class Application {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User applicant;
 
-    public Application(ApplicationRequest app, ApplicationStatus status, List<AdminComment> comments, User applicant) {
+    public Application(ApplicationRequest app, ApplicationStatus status, List<Comment> comments, User applicant) {
         this.phoneNumber = app.getPhoneNumber();
         this.education = app.getEducation();
         this.hobbies = app.getHobbies();

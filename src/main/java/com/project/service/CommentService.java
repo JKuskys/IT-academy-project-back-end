@@ -1,0 +1,23 @@
+package com.project.service;
+
+import com.project.exception.AdminCommentNotFoundException;
+import com.project.exception.ApplicationNotFoundException;
+import com.project.exception.UserNotFoundException;
+import com.project.model.request.CommentRequest;
+import com.project.model.response.CommentResponse;
+
+import java.util.List;
+
+public interface CommentService {
+    List<CommentResponse> getAll(Long appId);
+
+    CommentResponse getById(Long id) throws AdminCommentNotFoundException;
+
+    CommentResponse addAdminComment(CommentRequest adminComment, Long appId)
+            throws ApplicationNotFoundException, UserNotFoundException;
+
+    CommentResponse updateAdminComment(CommentRequest adminComment, Long id, Long appId)
+            throws AdminCommentNotFoundException;
+
+    void deleteAdminComment(Long id) throws AdminCommentNotFoundException;
+}

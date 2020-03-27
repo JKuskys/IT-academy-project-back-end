@@ -14,9 +14,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -87,5 +85,6 @@ public class User implements UserDetails {
         this.fullName = user.getFullName();
         this.email = user.getEmail();
         this.password = user.getPassword();
+        this.roles =  new ArrayList<>(Collections.singletonList("USER"));
     }
 }
