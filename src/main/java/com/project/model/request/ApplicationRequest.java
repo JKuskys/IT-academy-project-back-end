@@ -50,5 +50,5 @@ public class ApplicationRequest {
     @NotBlank(message = "Paraiškos data negali būti tuščia")
     private String applicationDate;
 
-    private User user;
+    private UserRequest user;
 }

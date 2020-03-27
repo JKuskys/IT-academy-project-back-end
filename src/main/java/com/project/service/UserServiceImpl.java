@@ -4,6 +4,7 @@ import com.project.exception.UserEmailExistsException;
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
+import com.project.model.request.UserRequest;
 import com.project.repository.UserRepository;
 import com.project.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,16 +46,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(User user) throws UserException {
-        userValidator.validate(user);
+    public User addUser(UserRequest userRequest) throws UserException {
+        userValidator.validate(userRequest);
 
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new UserEmailExistsException(user.getEmail());
+        if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            throw new UserEmailExistsException(userRequest.getEmail());
         }
 
-        user.setId(null);
+        userRequest.setPassword(bcryptEncoder.encode(userRequest.getPassword()));
 
-        user.setPassword(bcryptEncoder.encode(user.getPassword()));
+        User user = new User(userRequest);
 
         List<String> roles = new ArrayList<>();
         roles.add("USER");
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user, long id) throws UserException {
+    public User updateUser(UserRequest user, long id) throws UserException {
         if (!userRepository.findById(id).isPresent()) {
             throw new UserNotFoundException(id);
         }

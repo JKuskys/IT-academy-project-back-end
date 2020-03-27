@@ -3,6 +3,7 @@ package com.project.service;
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
+import com.project.model.request.UserRequest;
 
 import java.util.List;
 
@@ -14,9 +15,9 @@ public interface UserService {
 
     User getByEmail(final String email) throws UserNotFoundException;
 
-    User addUser(User user) throws UserException;
+    User addUser(UserRequest user) throws UserException;
 
-    User updateUser(User user, long id) throws UserException;
+    User updateUser(UserRequest user, long id) throws UserException;
 
     void deleteUser(final long id) throws UserNotFoundException;
 

@@ -1,5 +1,6 @@
 package com.project.model;
 
+import com.project.model.request.ApplicationRequest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -60,23 +61,21 @@ public class Application {
     @EqualsAndHashCode.Exclude
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User applicant;
 
-    public Application(String phoneNumber, String education, String hobbies, boolean agreementNeeded, String comment,
-                           boolean academyTimeSuitable, String reason, String technologies, String source, String applicationDate,
-                           ApplicationStatus status, ArrayList<AdminComment> comments, User user) {
-        this.phoneNumber = phoneNumber;
-        this.education = education;
-        this.hobbies = hobbies;
-        this.isAgreementNeeded = agreementNeeded;
-        this.comment = comment;
-        this.isAcademyTimeSuitable = academyTimeSuitable;
-        this.reason = reason;
-        this.technologies = technologies;
-        this.source = source;
-        this.applicationDate = applicationDate;
+    public Application(ApplicationRequest app, ApplicationStatus status, List<AdminComment> comments, User applicant) {
+        this.phoneNumber = app.getPhoneNumber();
+        this.education = app.getEducation();
+        this.hobbies = app.getHobbies();
+        this.isAgreementNeeded = app.isAgreementNeeded();
+        this.comment = app.getComment();
+        this.isAcademyTimeSuitable = app.isAcademyTimeSuitable();
+        this.reason = app.getReason();
+        this.technologies = app.getTechnologies();
+        this.source = app.getSource();
+        this.applicationDate = app.getApplicationDate();
         this.status = status;
         this.comments = comments;
-        this.user = user;
+        this.applicant = applicant;
     }
 }

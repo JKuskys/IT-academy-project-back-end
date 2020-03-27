@@ -4,6 +4,7 @@ import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserException;
 import com.project.model.Application;
 import com.project.model.request.ApplicationRequest;
+import com.project.model.request.ApplicationUpdateRequest;
 import com.project.model.response.ApplicationResponse;
 import com.project.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class ApplicationController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateApplication(@RequestBody Application application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+    ResponseEntity<HttpStatus> updateApplication(@RequestBody ApplicationUpdateRequest application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
         applicationService.updateApplication(application, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

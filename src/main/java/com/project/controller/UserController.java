@@ -5,6 +5,7 @@ import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
 import com.project.model.User;
 import com.project.model.request.UserCommentRequest;
+import com.project.model.request.UserRequest;
 import com.project.model.response.ApplicationResponse;
 import com.project.model.response.UserResponse;
 import com.project.service.UserService;
@@ -52,13 +53,13 @@ public class UserController {
     }
 
     @PostMapping
-    ResponseEntity<HttpStatus> createUser(@RequestBody User user) throws UserException {
+    ResponseEntity<HttpStatus> createUser(@RequestBody UserRequest user) throws UserException {
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<HttpStatus> updateUser(@RequestBody User user, @PathVariable Long id) throws UserException {
+    ResponseEntity<HttpStatus> updateUser(@RequestBody UserRequest user, @PathVariable Long id) throws UserException {
         userService.updateUser(user, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
