@@ -20,4 +20,6 @@ public class CommentRequest {
 
     @NotBlank(message = "Komentaro autoriaus elektroninis paštas negali būti nenurodytas")
     private String authorEmail;
+
+    private boolean isVisibleToApplicant;
 }

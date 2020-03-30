@@ -45,10 +45,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<CommentResponse> getApplicantVisibleComments(Long appId) {
+        List<CommentResponse> comments = getAll(appId);
+        return comments.stream().filter(CommentResponse::isVisibleToApplicant).collect(Collectors.toList());
+    }
+
+    @Override
     public CommentResponse addAdminComment(CommentRequest comment, Long appId)
             throws ApplicationNotFoundException, UserNotFoundException {
-
-        Comment adminComment = new Comment(comment.getComment(), comment.getCommentDate(),
+        Comment adminComment = new Comment(comment.getComment(), comment.getCommentDate(), comment.isVisibleToApplicant(),
                 applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()));
 
         return new CommentResponse(commentRepository.save(adminComment));
@@ -56,7 +61,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentResponse updateAdminComment(CommentRequest commentRequest, Long id, Long appId) throws CommentNotFoundException {
-
         return new CommentResponse(commentRepository.findById(id)
                 .map(existingComment -> {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

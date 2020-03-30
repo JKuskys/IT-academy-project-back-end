@@ -32,13 +32,14 @@ CREATE table user_roles (
         ON DELETE CASCADE
 );
 
-create table admin_comments (
+create table application_comments (
     id bigint not null primary key AUTO_INCREMENT,
     user_id bigint not null,
     application_id bigint not null,
     comment varchar(1500) not null,
     comment_date date not null,
     date_modified date,
+    is_visible_to_student boolean default false,
     foreign key (user_id) references user(id)
         on update no action
         on delete cascade,
@@ -68,9 +69,15 @@ insert into user_roles values (3, 'USER', 3);
 insert into user_roles values (4, 'USER', 4);
 insert into user_roles values (5, 'USER', 5);
 
-insert into admin_comments values (1, 1, 1, 'Visai neblogai atrodo', TO_DATE('2020-03-24', 'YYYY-MM-DD'), null );
-insert into admin_comments values (2, 2, 1, 'Galėjo apie technologjas plačiau', TO_DATE('2020-03-25', 'YYYY-MM-DD'), null );
-insert into admin_comments values (3, 1, 2, 'Reikėtų susisiekti dėl tos sutarties, žmogus nežino tvarkos matyt',
-    TO_DATE('2020-03-23', 'YYYY-MM-DD'), null );
-insert into admin_comments values (4, 2, 2, 'Šiaip atrodo neblogai',
-    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null );
+insert into application_comments values (1, 1, 1, 'Visai neblogai atrodo', TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, false );
+insert into application_comments values (2, 2, 1, 'Galėjo apie technologjas plačiau', TO_DATE('2020-03-25', 'YYYY-MM-DD'), null, false );
+insert into application_comments values (3, 1, 2, 'Reikėtų susisiekti dėl tos sutarties, žmogus nežino tvarkos matyt',
+    TO_DATE('2020-03-23', 'YYYY-MM-DD'), null, false );
+insert into application_comments values (4, 2, 2, 'Šiaip atrodo neblogai',
+    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, false );
+insert into application_comments values (5, 1, 2, 'Galbūt galėtumėte plačiau pakomentuoti, kodėl negalite pasirašyti trišalės sutarties?',
+    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, true );
+insert into application_comments values (6, 3, 2, 'Nežinau, į ką universitete kreiptis šiuo klausimu',
+    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, true );
+insert into application_comments values (7, 1, 2, 'Paprastai studijų skyrius turetų galįti padėti tokiu klausimu',
+    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, true );
