@@ -35,6 +35,11 @@ public class CommentController {
         return new ResponseEntity<>(commentService.getById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/applicant/visible")
+    public ResponseEntity<List<CommentResponse>> fetchApplicantVisibleComments(@PathVariable("appId") Long appId) {
+        return new ResponseEntity<>(commentService.getApplicantVisibleComments(appId), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<CommentResponse> createComment(@Valid @RequestBody CommentRequest comment, @PathVariable("appId") Long appId)
             throws ApplicationNotFoundException, UserNotFoundException {

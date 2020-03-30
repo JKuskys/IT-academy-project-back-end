@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "admin_comments")
+@Table(name = "application_comments")
 public class Comment {
 
     @Id
@@ -28,6 +28,9 @@ public class Comment {
     @Column(name = "date_modified")
     private String dateModified;
 
+    @Column(name = "is_visible_to_student")
+    private boolean isVisibleToApplicant;
+
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
@@ -36,10 +39,11 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    public Comment(String comment, String date, Application application, User user) {
+    public Comment(String comment, String date, boolean isVisible, Application application, User user) {
         this.comment = comment;
         this.commentDate = date;
         this.application = application;
         this.author = user;
+        this.isVisibleToApplicant = isVisible;
     }
 }

@@ -1,6 +1,7 @@
 package com.project.model.response;
 
 import com.project.model.Comment;
+import com.project.model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,10 @@ public class CommentResponse implements Serializable {
 
     private String dateModified;
 
+    private boolean isVisibleToApplicant;
+
+    private boolean isAuthorAdmin;
+
     public CommentResponse (Comment comment) {
         this.id = comment.getId();
         this.comment = comment.getComment();
@@ -30,5 +35,7 @@ public class CommentResponse implements Serializable {
         this.authorEmail = comment.getAuthor().getEmail();
         this.commentDate = comment.getCommentDate();
         this.dateModified = comment.getDateModified();
+        this.isVisibleToApplicant = comment.isVisibleToApplicant();
+        this.isAuthorAdmin = comment.getAuthor().getRoles().contains(UserRole.ADMIN.name());
     }
 }

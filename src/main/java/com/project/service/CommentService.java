@@ -13,6 +13,8 @@ public interface CommentService {
 
     CommentResponse getById(Long id) throws CommentNotFoundException;
 
+    List<CommentResponse> getApplicantVisibleComments(Long appId);
+
     CommentResponse addAdminComment(CommentRequest adminComment, Long appId)
             throws ApplicationNotFoundException, UserNotFoundException;
 
