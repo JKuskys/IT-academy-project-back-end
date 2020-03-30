@@ -38,14 +38,12 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentResponse> createComment(@Valid @RequestBody CommentRequest comment, @PathVariable("appId") Long appId)
             throws ApplicationNotFoundException, UserNotFoundException {
-
         return new ResponseEntity<>(commentService.addAdminComment(comment, appId), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponse> updateComment(@RequestBody CommentRequest comment, @PathVariable("id") Long id, @PathVariable("appId") Long appId)
             throws CommentNotFoundException {
-
         return new ResponseEntity<>(commentService.updateAdminComment(comment, id, appId), HttpStatus.OK);
     }
 

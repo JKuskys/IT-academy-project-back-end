@@ -3,7 +3,7 @@ package com.project.controller;
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
-import com.project.model.request.UserCommentRequest;
+import com.project.model.request.UserApplicationRequest;
 import com.project.model.request.UserRequest;
 import com.project.model.response.ApplicationResponse;
 import com.project.model.response.UserResponse;
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/application")
-    public ResponseEntity<ApplicationResponse> fetchUserApplication(@RequestBody UserCommentRequest email) throws UserNotFoundException {
+    public ResponseEntity<ApplicationResponse> fetchUserApplication(@RequestBody UserApplicationRequest email) throws UserNotFoundException {
         Application app = userService.getByEmail(email.getEmail()).getApplication();
         ApplicationResponse response = new ApplicationResponse(app);
         return new ResponseEntity<>(response, HttpStatus.OK);

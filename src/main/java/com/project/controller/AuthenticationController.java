@@ -44,8 +44,8 @@ public class AuthenticationController {
             String token = jwtTokenProvider.createToken(email, this.users.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("Neteisingas vartotojo paštas arba slaptažodis"))
                     .getRoles());
-            AuthenticationResponse model = new AuthenticationResponse(email, token);
-            return ok(model);
+            AuthenticationResponse response = new AuthenticationResponse(email, token);
+            return ok(response);
         } catch (AuthenticationException ex) {
             throw new BadCredentialsException("Neteisingas vartotojo paštas arba slaptažodis");
         }
