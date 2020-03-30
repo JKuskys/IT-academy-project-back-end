@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCommentRequest {
+public class UserApplicationRequest {
     private String email;
 }

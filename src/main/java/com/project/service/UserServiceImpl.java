@@ -4,7 +4,7 @@ import com.project.exception.UserEmailExistsException;
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
-import com.project.model.UserRoles;
+import com.project.model.UserRole;
 import com.project.model.request.UserRequest;
 import com.project.model.response.UserResponse;
 import com.project.repository.UserRepository;
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         User user = new User(userRequest);
 
         List<String> roles = new ArrayList<>();
-        roles.add(UserRoles.USER.toString());
+        roles.add(UserRole.USER.name());
         user.setRoles(roles);
 
         return userRepository.save(user);
