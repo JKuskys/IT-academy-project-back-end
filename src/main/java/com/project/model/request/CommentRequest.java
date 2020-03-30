@@ -15,9 +15,6 @@ public class CommentRequest {
     @Size(max = 1500, message = "Komentaras negali būti ilgesnis nei 1500 simboliai")
     private String comment;
 
-    @NotBlank(message = "Komentaro data negali būti tuščia")
-    private String commentDate;
-
     @NotBlank(message = "Komentaro autoriaus elektroninis paštas negali būti nenurodytas")
     private String authorEmail;
 

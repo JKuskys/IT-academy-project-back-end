@@ -53,7 +53,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentResponse addAdminComment(CommentRequest comment, Long appId)
             throws ApplicationNotFoundException, UserNotFoundException {
-        Comment adminComment = new Comment(comment.getComment(), comment.getCommentDate(), comment.isVisibleToApplicant(),
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Comment adminComment = new Comment(comment.getComment(), dateFormat.format(new Date()), comment.isVisibleToApplicant(),
                 applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()));
 
         return new CommentResponse(commentRepository.save(adminComment));
@@ -63,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponse updateAdminComment(CommentRequest commentRequest, Long id, Long appId) throws CommentNotFoundException {
         return new CommentResponse(commentRepository.findById(id)
                 .map(existingComment -> {
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     existingComment.setComment(commentRequest.getComment());
                     existingComment.setDateModified(dateFormat.format(new Date()));
                     return commentRepository.save(existingComment);
