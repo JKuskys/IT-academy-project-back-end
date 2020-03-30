@@ -43,7 +43,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationResponse addApplication(ApplicationRequest application) throws UserException {
         User user = userService.addUser(application.getUser());
         Application newApplication = new Application(application, ApplicationStatus.NAUJA, new ArrayList<>(), user);
-        return new ApplicationResponse(newApplication);
+        return new ApplicationResponse(applicationRepository.save(newApplication));
     }
 
     @Override
