@@ -46,8 +46,5 @@ public class ApplicationRequest {
     @Size(max = 255, message = "Iš kur sužinojai apie akademiją negali būti ilgesnis nei 255 simboliai")
     private String source;
 
-    @NotBlank(message = "Paraiškos data negali būti tuščia")
-    private String applicationDate;
-
     private UserRequest user;
 }

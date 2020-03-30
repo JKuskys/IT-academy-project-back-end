@@ -17,7 +17,7 @@ CREATE TABLE application (
     reason varchar(1500) NOT NULL,
     technologies varchar(1500) NOT NULL,
     source varchar(255) NOT NULL,
-    application_date date NOT NULL,
+    application_date datetime NOT NULL,
     status ENUM ('NAUJA', 'PERZIURETA', 'POTENCIALUS', 'ATMESTA', 'PRIIMTA') default 'NAUJA',
     FOREIGN KEY (user_id) REFERENCES user(id)
         ON UPDATE NO ACTION
@@ -37,8 +37,8 @@ create table application_comments (
     user_id bigint not null,
     application_id bigint not null,
     comment varchar(1500) not null,
-    comment_date date not null,
-    date_modified date,
+    comment_date datetime not null,
+    date_modified datetime,
     is_visible_to_student boolean default false,
     foreign key (user_id) references user(id)
         on update no action
@@ -55,13 +55,14 @@ INSERT INTO user values (4, 'arturas.lin@mail.com', '$2a$10$.RaqqkjTdQA985oETEdq
 INSERT INTO user values (5, 'simonasjankevicius@mail.lt', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Simonas Jankevičius');
 
 INSERT INTO application values (1, 3, '+37067712456', 'VU', 'Mėgstu skaityti knygas, keliauti', true,
-    '', true, 'Noriu daug išmokti', 'Mėgstu įvairias web technologijas', 'Iš facebook', TO_DATE('2020-03-13', 'YYYY-MM-DD'), 'POTENCIALUS');
+    '', true, 'Noriu daug išmokti', 'Mėgstu įvairias web technologijas', 'Iš facebook',
+    '2020-03-13 10:34:09', 'POTENCIALUS');
 INSERT INTO application values (2, 4, '+37060982454', 'Kauno technologijos universitetas', 'Mėgstu žaisti kompiuteriu, važinėtis dviračiu', false,
     'nežinau kur kreiptis', true, 'Noriu mokytis iš profesionalų', 'Man labai patinka big data, mokiausi principų savarankiškai', 'Iš draugų',
-    TO_DATE('2020-03-21', 'YYYY-MM-DD'), 'PERZIURETA');
+    '2020-03-21 11:34:09', 'PERZIURETA');
 INSERT INTO application values (3, 5, '+37060482000', 'VGTU', 'Programuoju', true, '', true,
     'Noriu išmokti naujų dalykų', 'Šiaip daug mokausi savarankiškai, daugiausiai įvairios web technologijos', 'Iš draugo',
-    TO_DATE('2020-03-26', 'YYYY-MM-DD'), 'NAUJA');
+    '2020-03-26 12:34:09', 'NAUJA');
 
 insert into user_roles values (1, 'ADMIN', 1);
 insert into user_roles values (2, 'ADMIN', 2);
@@ -69,15 +70,17 @@ insert into user_roles values (3, 'USER', 3);
 insert into user_roles values (4, 'USER', 4);
 insert into user_roles values (5, 'USER', 5);
 
-insert into application_comments values (1, 1, 1, 'Visai neblogai atrodo', TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, false );
-insert into application_comments values (2, 2, 1, 'Galėjo apie technologjas plačiau', TO_DATE('2020-03-25', 'YYYY-MM-DD'), null, false );
+insert into application_comments values (1, 1, 1, 'Visai neblogai atrodo',
+    '2020-03-22 11:34:09', null, false );
+insert into application_comments values (2, 2, 1, 'Galėjo apie technologjas plačiau',
+    '2020-03-23 15:34:09', null, false );
 insert into application_comments values (3, 1, 2, 'Reikėtų susisiekti dėl tos sutarties, žmogus nežino tvarkos matyt',
-    TO_DATE('2020-03-23', 'YYYY-MM-DD'), null, false );
+    '2020-03-23 16:34:09', null, false );
 insert into application_comments values (4, 2, 2, 'Šiaip atrodo neblogai',
-    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, false );
+    '2020-03-24 11:34:09', null, false );
 insert into application_comments values (5, 1, 2, 'Galbūt galėtumėte plačiau pakomentuoti, kodėl negalite pasirašyti trišalės sutarties?',
-    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, true );
+    '2020-03-24 14:34:09', null, true );
 insert into application_comments values (6, 3, 2, 'Nežinau, į ką universitete kreiptis šiuo klausimu',
-    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, true );
+    '2020-03-24 18:34:09', null, true );
 insert into application_comments values (7, 1, 2, 'Paprastai studijų skyrius turetų galįti padėti tokiu klausimu',
-    TO_DATE('2020-03-24', 'YYYY-MM-DD'), null, true );
+    '2020-03-25 10:34:09', null, true );

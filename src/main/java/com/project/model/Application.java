@@ -4,6 +4,9 @@ import com.project.model.request.ApplicationRequest;
 import lombok.*;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -60,6 +63,8 @@ public class Application {
     private User applicant;
 
     public Application(ApplicationRequest app, ApplicationStatus status, List<Comment> comments, User applicant) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         this.phoneNumber = app.getPhoneNumber();
         this.education = app.getEducation();
         this.hobbies = app.getHobbies();
@@ -69,7 +74,7 @@ public class Application {
         this.reason = app.getReason();
         this.technologies = app.getTechnologies();
         this.source = app.getSource();
-        this.applicationDate = app.getApplicationDate();
+        this.applicationDate = dateFormat.format(new Date());
         this.status = status;
         this.comments = comments;
         this.applicant = applicant;
