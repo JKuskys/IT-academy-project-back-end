@@ -41,7 +41,7 @@ public class ApplicationController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<ApplicationResponse> updateApplication(@RequestBody ApplicationUpdateRequest application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+    ResponseEntity<ApplicationResponse> updateApplication(@Valid @RequestBody ApplicationUpdateRequest application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
         return new ResponseEntity<>(applicationService.updateApplication(application, id), HttpStatus.OK);
     }
 
