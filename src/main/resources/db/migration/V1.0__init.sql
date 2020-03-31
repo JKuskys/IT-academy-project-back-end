@@ -80,7 +80,7 @@ insert into application_comments values (4, 2, 2, 'Šiaip atrodo neblogai',
     '2020-03-24 11:34:09', null, false );
 insert into application_comments values (5, 1, 2, 'Galbūt galėtumėte plačiau pakomentuoti, kodėl negalite pasirašyti trišalės sutarties?',
     '2020-03-24 14:34:09', null, true );
-insert into application_comments values (6, 3, 2, 'Nežinau, į ką universitete kreiptis šiuo klausimu',
+insert into application_comments values (6, 4, 2, 'Nežinau, į ką universitete kreiptis šiuo klausimu',
     '2020-03-24 18:34:09', null, true );
 insert into application_comments values (7, 1, 2, 'Paprastai studijų skyrius turetų galįti padėti tokiu klausimu',
     '2020-03-25 10:34:09', null, true );
