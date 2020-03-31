@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -38,19 +39,19 @@ public class UserController {
     }
 
     @PostMapping("/application")
-    public ResponseEntity<ApplicationResponse> fetchUserApplication(@RequestBody UserApplicationRequest email) throws UserNotFoundException {
+    public ResponseEntity<ApplicationResponse> fetchUserApplication(@Valid @RequestBody UserApplicationRequest email) throws UserNotFoundException {
         Application app = userService.getByEmail(email.getEmail()).getApplication();
         ApplicationResponse response = new ApplicationResponse(app);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    ResponseEntity<UserResponse> createUser(@RequestBody UserRequest user) throws UserException {
+    ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest user) throws UserException {
         return new ResponseEntity<>(new UserResponse(userService.addUser(user)), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest user, @PathVariable Long id) throws UserException {
+    ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest user, @PathVariable Long id) throws UserException {
         return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
     }
 

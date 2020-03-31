@@ -8,7 +8,6 @@ import com.project.model.UserRole;
 import com.project.model.request.UserRequest;
 import com.project.model.response.UserResponse;
 import com.project.repository.UserRepository;
-import com.project.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,14 +22,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserValidator userValidator;
     private BCryptPasswordEncoder bcryptEncoder;
 
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcryptEncoder) {
         this.userRepository = userRepository;
-        this.userValidator = new UserValidator();
         this.bcryptEncoder = bcryptEncoder;
     }
 
@@ -52,8 +49,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(UserRequest userRequest) throws UserException {
-        userValidator.validate(userRequest);
-
         if (userRepository.findByEmail(userRequest.getEmail()).isPresent()) {
             throw new UserEmailExistsException(userRequest.getEmail());
         }
@@ -76,8 +71,6 @@ public class UserServiceImpl implements UserService {
         if (!existingUser.isPresent()) {
             throw new UserNotFoundException(id);
         }
-
-        userValidator.validate(user);
 
         if (userRepository.findByEmail(user.getEmail()).isPresent()
                 && !userRepository.findByEmail(user.getEmail()).get().getId().equals(id)) {

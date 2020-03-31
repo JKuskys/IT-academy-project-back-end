@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 public class CommentRequest {
 
     @Size(max = 1500, message = "Komentaras negali būti ilgesnis nei 1500 simboliai")
+    @NotBlank(message = "Komentaras negali būti tuščias")
     private String comment;
 
     @NotBlank(message = "Komentaro autoriaus elektroninis paštas negali būti nenurodytas")

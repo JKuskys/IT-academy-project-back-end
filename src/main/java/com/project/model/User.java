@@ -29,8 +29,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @NotBlank
     @Column(name = "email", unique = true)
     private String email;
 
@@ -39,8 +37,6 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @NotBlank(message = "Vardas negali būti tuščias")
-    @Size(max = 255, message = "Vardas negali būti ilgesnis nei 255 simboliai")
     @Column(name = "full_name")
     private String fullName;
 

@@ -47,7 +47,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentResponse> updateComment(@RequestBody CommentRequest comment, @PathVariable("id") Long id, @PathVariable("appId") Long appId)
+    public ResponseEntity<CommentResponse> updateComment(@Valid @RequestBody CommentRequest comment, @PathVariable("id") Long id, @PathVariable("appId") Long appId)
             throws CommentNotFoundException {
         return new ResponseEntity<>(commentService.updateAdminComment(comment, id, appId), HttpStatus.OK);
     }
