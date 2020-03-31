@@ -47,14 +47,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void deleteApplication(Long id) throws ApplicationNotFoundException {
-        if (!applicationRepository.findById(id).isPresent()) {
-            throw new ApplicationNotFoundException(id);
-        }
-        applicationRepository.deleteById(id);
-    }
-
-    @Override
     public ApplicationResponse updateApplication(ApplicationUpdateRequest application, Long id) throws ApplicationNotFoundException {
         Optional<Application> existingApplication = applicationRepository.findById(id);
 
@@ -68,5 +60,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         }).get();
 
         return new ApplicationResponse(app);
+    }
+
+    @Override
+    public void deleteApplication(Long id) throws ApplicationNotFoundException {
+        if (!applicationRepository.existsById(id)) {
+            throw new ApplicationNotFoundException(id);
+        }
+        applicationRepository.deleteById(id);
     }
 }
