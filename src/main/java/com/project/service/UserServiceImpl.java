@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,7 +71,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateUser(UserRequest user, Long id) throws UserException {
-        if (!userRepository.findById(id).isPresent()) {
+        Optional<User> existingUser = userRepository.findById(id);
+
+        if (!existingUser.isPresent()) {
             throw new UserNotFoundException(id);
         }
 
@@ -81,19 +84,19 @@ public class UserServiceImpl implements UserService {
             throw new UserEmailExistsException(user.getEmail());
         }
 
-        User response = userRepository.findById(id)
-                .map(existingUser -> {
-                    existingUser.setEmail(user.getEmail());
-                    existingUser.setPassword(user.getPassword());
-                    existingUser.setFullName(user.getFullName());
-                    return userRepository.save(existingUser);
+        User response = existingUser
+                .map(existing -> {
+                    existing.setEmail(user.getEmail());
+                    existing.setPassword(user.getPassword());
+                    existing.setFullName(user.getFullName());
+                    return userRepository.save(existing);
                 }).get();
         return new UserResponse(response);
     }
 
     @Override
     public void deleteUser(long id) throws UserNotFoundException {
-        if (!userRepository.findById(id).isPresent()) {
+        if (!userRepository.existsById(id)) {
             throw new UserNotFoundException(id);
         }
         userRepository.deleteById(id);
