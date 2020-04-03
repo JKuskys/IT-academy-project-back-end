@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.exception.CommentAttachmentNotFoundException;
 import com.project.exception.CommentNotFoundException;
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserNotFoundException;
@@ -7,11 +8,14 @@ import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
 import com.project.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -33,6 +37,25 @@ public class CommentController {
     @GetMapping("/{id}")
     public ResponseEntity<CommentResponse> fetchComment(@PathVariable("id") Long id) throws CommentNotFoundException {
         return new ResponseEntity<>(commentService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}/attachment/{filename}")
+    public ResponseEntity fetchCommentAttachment(@PathVariable("id") Long id, @PathVariable("filename") String filename)
+            throws CommentNotFoundException, CommentAttachmentNotFoundException {
+        try {
+            byte[] data = commentService.getAttachment(id, filename);
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + filename + "\"").body(data);
+        } catch (IOException e) {
+            throw new CommentAttachmentNotFoundException(id);
+        }
+    }
+
+    @PostMapping("/{id}/attachment")
+    public ResponseEntity<HttpStatus> createCommentAttachment(@PathVariable("id") Long id, @RequestParam("file")MultipartFile file)
+            throws CommentNotFoundException, IOException {
+        commentService.addAttachment(id, file);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/applicant/visible")

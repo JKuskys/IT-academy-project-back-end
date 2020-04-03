@@ -28,6 +28,8 @@ public class CommentResponse implements Serializable {
 
     private boolean isAuthorAdmin;
 
+    private String attachmentName;
+
     public CommentResponse (Comment comment) {
         this.id = comment.getId();
         this.comment = comment.getComment();
@@ -37,5 +39,6 @@ public class CommentResponse implements Serializable {
         this.dateModified = comment.getDateModified();
         this.isVisibleToApplicant = comment.isVisibleToApplicant();
         this.isAuthorAdmin = comment.getAuthor().getRoles().contains(UserRole.ADMIN.name());
+        this.attachmentName = comment.getAttachmentName();
     }
 }
