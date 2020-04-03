@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.exception.CommentAttachmentNotFoundException;
 import com.project.exception.CommentNotFoundException;
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserNotFoundException;
@@ -8,10 +9,12 @@ import com.project.model.response.CommentResponse;
 import com.project.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -33,6 +36,15 @@ public class CommentController {
     @GetMapping("/{id}")
     public ResponseEntity<CommentResponse> fetchComment(@PathVariable("id") Long id) throws CommentNotFoundException {
         return new ResponseEntity<>(commentService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}/attachment", produces = MediaType.APPLICATION_PDF_VALUE)
+    public @ResponseBody byte[] fetchCommentAttachment(@PathVariable("id") Long id) throws CommentNotFoundException, CommentAttachmentNotFoundException {
+        try {
+            return commentService.getAttachmentById(id);
+        } catch (IOException e) {
+            throw new CommentAttachmentNotFoundException(id);
+        }
     }
 
     @GetMapping("/applicant/visible")

@@ -1,5 +1,6 @@
 package com.project.service;
 
+import com.project.exception.CommentAttachmentNotFoundException;
 import com.project.exception.CommentNotFoundException;
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserNotFoundException;
@@ -7,9 +8,12 @@ import com.project.model.Comment;
 import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
 import com.project.repository.CommentRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +46,17 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponse getById(Long id) throws CommentNotFoundException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
         return new CommentResponse(comment);
+    }
+
+    @Override
+    public byte[] getAttachmentById(Long id) throws CommentNotFoundException, IOException,
+            CommentAttachmentNotFoundException {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+        InputStream in =
+                getClass().getClassLoader().getResourceAsStream(String.format("attachments/%d.pdf", comment.getId()));
+        if(in == null)
+            throw new CommentAttachmentNotFoundException(id);
+        return IOUtils.toByteArray(in);
     }
 
     @Override
