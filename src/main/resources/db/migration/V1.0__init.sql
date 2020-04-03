@@ -40,6 +40,7 @@ create table application_comments (
     comment_date datetime not null,
     date_modified datetime,
     is_visible_to_student boolean default false,
+    attachment_name varchar(255) default null,
     foreign key (user_id) references user(id)
         on update no action
         on delete cascade,
@@ -71,16 +72,16 @@ insert into user_roles values (4, 'USER', 4);
 insert into user_roles values (5, 'USER', 5);
 
 insert into application_comments values (1, 1, 1, 'Visai neblogai atrodo',
-    '2020-03-22 11:34:09', null, false );
+    '2020-03-22 11:34:09', null, false, null );
 insert into application_comments values (2, 2, 1, 'Galėjo apie technologjas plačiau',
-    '2020-03-23 15:34:09', null, false );
+    '2020-03-23 15:34:09', null, false, null );
 insert into application_comments values (3, 1, 2, 'Reikėtų susisiekti dėl tos sutarties, žmogus nežino tvarkos matyt',
-    '2020-03-23 16:34:09', null, false );
+    '2020-03-23 16:34:09', null, false, null );
 insert into application_comments values (4, 2, 2, 'Šiaip atrodo neblogai',
-    '2020-03-24 11:34:09', null, false );
+    '2020-03-24 11:34:09', null, false, null );
 insert into application_comments values (5, 1, 2, 'Galbūt galėtumėte plačiau pakomentuoti, kodėl negalite pasirašyti trišalės sutarties?',
-    '2020-03-24 14:34:09', null, true );
+    '2020-03-24 14:34:09', null, true, null );
 insert into application_comments values (6, 4, 2, 'Nežinau, į ką universitete kreiptis šiuo klausimu',
-    '2020-03-24 18:34:09', null, true );
+    '2020-03-24 18:34:09', null, true, '6.pdf' );
 insert into application_comments values (7, 1, 2, 'Paprastai studijų skyrius turetų galįti padėti tokiu klausimu',
-    '2020-03-25 10:34:09', null, true );
+    '2020-03-25 10:34:09', null, true, '7.doc' );

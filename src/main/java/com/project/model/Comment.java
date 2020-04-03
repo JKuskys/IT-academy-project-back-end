@@ -31,6 +31,9 @@ public class Comment {
     @Column(name = "is_visible_to_student")
     private boolean isVisibleToApplicant;
 
+    @Column(name = "attachment_name")
+    private String attachmentName;
+
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
@@ -39,11 +42,12 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    public Comment(String comment, String date, boolean isVisible, Application application, User user) {
+    public Comment(String comment, String date, boolean isVisible, Application application, User user, String attachmentName) {
         this.comment = comment;
         this.commentDate = date;
         this.application = application;
         this.author = user;
         this.isVisibleToApplicant = isVisible;
+        this.attachmentName = attachmentName;
     }
 }

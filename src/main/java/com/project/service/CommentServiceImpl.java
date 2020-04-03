@@ -8,12 +8,14 @@ import com.project.model.Comment;
 import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
 import com.project.repository.CommentRepository;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,14 +51,32 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public byte[] getAttachmentById(Long id) throws CommentNotFoundException, IOException,
+    public byte[] getAttachment(Long id, String filename) throws CommentNotFoundException, IOException,
             CommentAttachmentNotFoundException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
         InputStream in =
-                getClass().getClassLoader().getResourceAsStream(String.format("attachments/%d.pdf", comment.getId()));
+                getClass().getClassLoader().getResourceAsStream(String.format("attachments/%s", filename));
         if(in == null)
             throw new CommentAttachmentNotFoundException(id);
         return IOUtils.toByteArray(in);
+    }
+
+    @Override
+    public void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
+        byte[] bytes = file.getBytes();
+        String extention = FilenameUtils.getExtension(file.getOriginalFilename());
+        //TODO some validation for the file goes in here
+
+        String newName = String.format("%d.%s", comment.getId(), extention);
+        //TODO don't know if file.getOriginalFilename() is important to keep or not
+        comment.setAttachmentName(newName);
+        commentRepository.save(comment);
+
+        String parent = getClass().getClassLoader().getResource("attachments/").toString().substring(6);
+        File newFile = new File(parent, newName);
+        newFile.createNewFile();
+        Files.write(newFile.toPath(), bytes);
     }
 
     @Override
@@ -71,7 +91,7 @@ public class CommentServiceImpl implements CommentService {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Comment adminComment = new Comment(comment.getComment(), dateFormat.format(new Date()), comment.isVisibleToApplicant(),
-                applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()));
+                applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()), null);
 
         return new CommentResponse(commentRepository.save(adminComment));
     }

@@ -6,6 +6,7 @@ import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserNotFoundException;
 import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +16,9 @@ public interface CommentService {
 
     CommentResponse getById(Long id) throws CommentNotFoundException;
 
-    byte[] getAttachmentById(Long id) throws CommentNotFoundException, IOException, CommentAttachmentNotFoundException;
+    byte[] getAttachment(Long id, String filename) throws CommentNotFoundException, IOException, CommentAttachmentNotFoundException;
+
+    void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException;
 
     List<CommentResponse> getApplicantVisibleComments(Long appId);
 

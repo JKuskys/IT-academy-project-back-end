@@ -8,10 +8,11 @@ import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
 import com.project.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -38,13 +39,23 @@ public class CommentController {
         return new ResponseEntity<>(commentService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}/attachment", produces = MediaType.APPLICATION_PDF_VALUE)
-    public @ResponseBody byte[] fetchCommentAttachment(@PathVariable("id") Long id) throws CommentNotFoundException, CommentAttachmentNotFoundException {
+    @GetMapping(value = "/{id}/attachment/{filename}")
+    public ResponseEntity fetchCommentAttachment(@PathVariable("id") Long id, @PathVariable("filename") String filename)
+            throws CommentNotFoundException, CommentAttachmentNotFoundException {
         try {
-            return commentService.getAttachmentById(id);
+            byte[] data = commentService.getAttachment(id, filename);
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + filename + "\"").body(data);
         } catch (IOException e) {
             throw new CommentAttachmentNotFoundException(id);
         }
+    }
+
+    @PostMapping("/{id}/attachment")
+    public ResponseEntity<HttpStatus> createCommentAttachment(@PathVariable("id") Long id, @RequestParam("file")MultipartFile file)
+            throws CommentNotFoundException, IOException {
+        commentService.addAttachment(id, file);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/applicant/visible")
