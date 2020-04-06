@@ -52,34 +52,25 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public byte[] getAttachment(Long id, String filename) throws CommentNotFoundException, IOException,
+    public byte[] getAttachment(Long id, String filename) throws CommentNotFoundException,
             CommentAttachmentNotFoundException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
-        InputStream in =
-                getClass().getClassLoader().getResourceAsStream(String.format("attachments/%s", filename));
-        if(in == null)
+
+        if(!comment.getAttachmentName().equals(filename))
             throw new CommentAttachmentNotFoundException(id);
-        return IOUtils.toByteArray(in);
+
+        return comment.getAttachment();
     }
 
     @Override
-    public void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException, URISyntaxException {
+    public void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
         byte[] bytes = file.getBytes();
         String extention = FilenameUtils.getExtension(file.getOriginalFilename());
         //TODO some validation for the file goes in here
 
-        String newName = String.format("%d.%s", comment.getId(), extention);
-        //TODO don't know if file.getOriginalFilename() is important to keep or not
-
-        File newFile = new File(getClass().getClassLoader().getResource("attachments/").toURI().resolve(newName).getPath());
-
-        FileOutputStream fileOutput = new FileOutputStream(newFile);
-        fileOutput.write(bytes);
-        fileOutput.flush();
-        fileOutput.close();
-
-        comment.setAttachmentName(newName);
+        comment.setAttachment(bytes);
+        comment.setAttachmentName(file.getOriginalFilename());
         commentRepository.save(comment);
     }
 

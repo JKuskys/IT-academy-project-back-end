@@ -34,6 +34,9 @@ public class Comment {
     @Column(name = "attachment_name")
     private String attachmentName;
 
+    @Column(name = "attachment")
+    private byte[] attachment;
+
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
@@ -49,5 +52,6 @@ public class Comment {
         this.author = user;
         this.isVisibleToApplicant = isVisible;
         this.attachmentName = attachmentName;
+        this.attachment = null;
     }
 }

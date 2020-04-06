@@ -43,13 +43,9 @@ public class CommentController {
     @GetMapping(value = "/{id}/attachment/{filename}")
     public ResponseEntity fetchCommentAttachment(@PathVariable("id") Long id, @PathVariable("filename") String filename)
             throws CommentNotFoundException, CommentAttachmentNotFoundException {
-        try {
-            byte[] data = commentService.getAttachment(id, filename);
-            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                    "attachment; filename=\"" + filename + "\"").body(data);
-        } catch (IOException e) {
-            throw new CommentAttachmentNotFoundException(id);
-        }
+        byte[] data = commentService.getAttachment(id, filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"").body(data);
     }
 
     @PostMapping("/{id}/attachment")
