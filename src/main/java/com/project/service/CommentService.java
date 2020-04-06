@@ -17,9 +17,9 @@ public interface CommentService {
 
     CommentResponse getById(Long id) throws CommentNotFoundException;
 
-    byte[] getAttachment(Long id, String filename) throws CommentNotFoundException, IOException, CommentAttachmentNotFoundException;
+    byte[] getAttachment(Long id, String filename) throws CommentNotFoundException, CommentAttachmentNotFoundException;
 
-    void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException, URISyntaxException;
+    void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException;
 
     List<CommentResponse> getApplicantVisibleComments(Long appId);
 
