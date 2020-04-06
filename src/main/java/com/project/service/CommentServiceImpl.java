@@ -73,8 +73,11 @@ public class CommentServiceImpl implements CommentService {
         //TODO don't know if file.getOriginalFilename() is important to keep or not
 
         File newFile = new File(getClass().getClassLoader().getResource("attachments/").toURI().resolve(newName).getPath());
-        newFile.createNewFile();
-        Files.write(newFile.toPath(), bytes);
+
+        FileOutputStream fileOutput = new FileOutputStream(newFile);
+        fileOutput.write(bytes);
+        fileOutput.flush();
+        fileOutput.close();
 
         comment.setAttachmentName(newName);
         commentRepository.save(comment);
