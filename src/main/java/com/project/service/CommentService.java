@@ -9,6 +9,7 @@ import com.project.model.response.CommentResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public interface CommentService {
@@ -18,7 +19,7 @@ public interface CommentService {
 
     byte[] getAttachment(Long id, String filename) throws CommentNotFoundException, IOException, CommentAttachmentNotFoundException;
 
-    void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException;
+    void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException, URISyntaxException;
 
     List<CommentResponse> getApplicantVisibleComments(Long appId);
 
