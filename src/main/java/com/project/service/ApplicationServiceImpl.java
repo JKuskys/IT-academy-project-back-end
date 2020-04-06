@@ -12,7 +12,10 @@ import com.project.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,8 +44,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationResponse addApplication(ApplicationRequest application) throws UserException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         User user = userService.addUser(application.getUser());
-        Application newApplication = new Application(application, ApplicationStatus.NAUJA, new ArrayList<>(), user);
+        Application newApplication = new Application(application, ApplicationStatus.NAUJA, new ArrayList<>(), user, dateFormat.format(new Date()));
         return new ApplicationResponse(applicationRepository.save(newApplication));
     }
 
