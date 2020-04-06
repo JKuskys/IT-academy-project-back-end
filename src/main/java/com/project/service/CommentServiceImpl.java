@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -62,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException {
+    public void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException, URISyntaxException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
         byte[] bytes = file.getBytes();
         String extention = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -70,13 +71,13 @@ public class CommentServiceImpl implements CommentService {
 
         String newName = String.format("%d.%s", comment.getId(), extention);
         //TODO don't know if file.getOriginalFilename() is important to keep or not
-        comment.setAttachmentName(newName);
-        commentRepository.save(comment);
 
-        String parent = getClass().getClassLoader().getResource("attachments/").toString().substring(6);
-        File newFile = new File(parent, newName);
+        File newFile = new File(getClass().getClassLoader().getResource("attachments/").toURI().resolve(newName).getPath());
         newFile.createNewFile();
         Files.write(newFile.toPath(), bytes);
+
+        comment.setAttachmentName(newName);
+        commentRepository.save(comment);
     }
 
     @Override

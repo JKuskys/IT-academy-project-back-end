@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -53,7 +54,7 @@ public class CommentController {
 
     @PostMapping("/{id}/attachment")
     public ResponseEntity<HttpStatus> createCommentAttachment(@PathVariable("id") Long id, @RequestParam("file")MultipartFile file)
-            throws CommentNotFoundException, IOException {
+            throws CommentNotFoundException, IOException, URISyntaxException {
         commentService.addAttachment(id, file);
         return ResponseEntity.noContent().build();
     }
