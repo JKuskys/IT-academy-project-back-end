@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<UserResponse> fetchUser(@PathVariable Long id) throws UserNotFoundException {
+    public ResponseEntity<UserResponse> fetchUser(@PathVariable Long id) throws UserNotFoundException {
         return new ResponseEntity<>(new UserResponse(userService.getById(id)), HttpStatus.OK);
     }
 
@@ -46,17 +46,17 @@ public class UserController {
     }
 
     @PostMapping
-    ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest user) throws UserException {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest user) throws UserException {
         return new ResponseEntity<>(new UserResponse(userService.addUser(user)), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest user, @PathVariable Long id) throws UserException {
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UserRequest user, @PathVariable Long id) throws UserException {
         return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) throws UserNotFoundException {
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) throws UserNotFoundException {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

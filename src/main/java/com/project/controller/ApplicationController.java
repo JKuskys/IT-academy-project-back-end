@@ -36,17 +36,17 @@ public class ApplicationController {
     }
 
     @PostMapping
-    ResponseEntity<ApplicationResponse> createApplication(@Valid @RequestBody ApplicationRequest application) throws UserException {
+    public ResponseEntity<ApplicationResponse> createApplication(@Valid @RequestBody ApplicationRequest application) throws UserException {
         return new ResponseEntity<>(applicationService.addApplication(application), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<ApplicationResponse> updateApplication(@Valid @RequestBody ApplicationUpdateRequest application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
+    public ResponseEntity<ApplicationResponse> updateApplication(@Valid @RequestBody ApplicationUpdateRequest application, @PathVariable Long id) throws UserException, ApplicationNotFoundException {
         return new ResponseEntity<>(applicationService.updateApplication(application, id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> deleteApplication(@PathVariable Long id) throws ApplicationNotFoundException {
+    public ResponseEntity<HttpStatus> deleteApplication(@PathVariable Long id) throws ApplicationNotFoundException {
         applicationService.deleteApplication(id);
         return ResponseEntity.noContent().build();
     }
