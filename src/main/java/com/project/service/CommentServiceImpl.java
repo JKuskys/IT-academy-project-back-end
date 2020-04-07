@@ -7,6 +7,7 @@ import com.project.exception.UserNotFoundException;
 import com.project.model.Application;
 import com.project.model.Comment;
 import com.project.model.User;
+import com.project.model.UserRole;
 import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
 import com.project.repository.CommentRepository;
@@ -32,12 +33,14 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final ApplicationService applicationService;
     private final UserService userService;
+    private final EmailService emailService;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, ApplicationService applicationService, UserService userService) {
+    public CommentServiceImpl(CommentRepository commentRepository, ApplicationService applicationService, UserService userService, EmailService emailService) {
         this.commentRepository = commentRepository;
         this.applicationService = applicationService;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -58,8 +61,9 @@ public class CommentServiceImpl implements CommentService {
             CommentAttachmentNotFoundException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
 
-        if (!comment.getAttachmentName().equals(filename))
+        if (!comment.getAttachmentName().equals(filename)) {
             throw new CommentAttachmentNotFoundException(id);
+        }
 
         return comment.getAttachment();
     }
@@ -88,17 +92,24 @@ public class CommentServiceImpl implements CommentService {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         boolean isExternal = comment.isVisibleToApplicant();
         Application app = applicationService.getById(appId);
+        User author = userService.getByEmail(comment.getAuthorEmail());
 
         if (isExternal) {
             app.setNewExternalComment(true);
             app.setLastExternalCommentAuthor(comment.getAuthorEmail());
+            if (author.getRoles().contains(UserRole.ADMIN.name())) {
+                emailService.sendEmail(
+                        app.getApplicant().getEmail(), "Gavote naują komentarą",
+                        "Labas!\n" +
+                                "Gavai naują komentarą nuo IT Akademijos. Perskaityti gali prisijungęs prie sistemos.");
+            }
         } else {
             app.setNewInternalComment(true);
             app.setLastInternalCommentAuthor(comment.getAuthorEmail());
         }
 
         Comment adminComment = new Comment(comment.getComment(), dateFormat.format(new Date()), isExternal,
-                app, userService.getByEmail(comment.getAuthorEmail()), null);
+                app, author, null);
 
         return new CommentResponse(commentRepository.save(adminComment));
     }
