@@ -31,7 +31,8 @@ public class CommentServiceImpl implements CommentService {
     private final EmailService emailService;
 
     private final List<String> allowedFileExtensions = Arrays.asList("pdf", "doc", "docx");
-    private final List<String> allowedContentTypes = Arrays.asList("application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf");
+    private final List<String> allowedContentTypes = Arrays.asList("application/msword", "application/pdf",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/octet-stream");
 
     @Autowired
     public CommentServiceImpl(CommentRepository commentRepository, ApplicationService applicationService, UserService userService, EmailService emailService) {
