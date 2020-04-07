@@ -43,6 +43,14 @@ public class ApplicationResponse implements Serializable {
 
     private ApplicationStatus status;
 
+    private boolean isNewInternalComment;
+
+    private String lastInternalCommentAuthor;
+
+    private boolean isNewExternalComment;
+
+    private String lastExternalCommentAuthor;
+
     public ApplicationResponse (Application app) {
         this.id = app.getId();
         this.fullName = app.getApplicant().getFullName();
@@ -59,5 +67,9 @@ public class ApplicationResponse implements Serializable {
         this.email = app.getApplicant().getEmail();
         this.commentCount = app.getComments().size();
         this.status = app.getStatus();
+        this.isNewExternalComment = app.isNewExternalComment();
+        this.isNewInternalComment = app.isNewInternalComment();
+        this.lastExternalCommentAuthor = app.getLastExternalCommentAuthor();
+        this.lastInternalCommentAuthor = app.getLastInternalCommentAuthor();
     }
 }

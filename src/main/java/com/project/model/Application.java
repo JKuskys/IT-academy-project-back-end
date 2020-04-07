@@ -53,6 +53,18 @@ public class Application {
     @Column(name = "status")
     private ApplicationStatus status;
 
+    @Column(name = "is_new_internal_comment")
+    private boolean isNewInternalComment;
+
+    @Column(name = "last_internal_comment_author")
+    private String lastInternalCommentAuthor;
+
+    @Column(name = "is_new_external_comment")
+    private boolean isNewExternalComment;
+
+    @Column(name = "last_external_comment_author")
+    private String lastExternalCommentAuthor;
+
     @OneToMany(mappedBy = "application")
     private List<Comment> comments;
 
