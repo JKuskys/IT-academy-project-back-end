@@ -24,11 +24,13 @@ import java.util.stream.Collectors;
 public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final UserService userService;
+    private final EmailService emailService;
 
     @Autowired
-    public ApplicationServiceImpl(ApplicationRepository applicationRepository, UserService userService) {
+    public ApplicationServiceImpl(ApplicationRepository applicationRepository, UserService userService, EmailService emailService) {
         this.applicationRepository = applicationRepository;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -61,10 +63,25 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ApplicationNotFoundException(id);
         }
 
+        ApplicationStatus newStatus = application.getStatus();
+
         Application app = existingApplication.map(existingApp -> {
-            existingApp.setStatus(application.getStatus());
+            existingApp.setStatus(newStatus);
             return applicationRepository.save(existingApp);
         }).get();
+
+        if (newStatus.equals(ApplicationStatus.PRIIMTA)) {
+            emailService.sendEmail(
+                    app.getApplicant().getEmail(), "Jūsų paraiškos statusas pakeistas",
+                    "Labas!\n" +
+                            "Sveikiname tapus IT Akademijos nariu! Laukia daug išūkių ir geras laikas. Daugiau informacijos netrukus");
+        } else if (newStatus.equals(ApplicationStatus.ATMESTA)) {
+            emailService.sendEmail(
+                    app.getApplicant().getEmail(), "Jūsų paraiškos statusas pakeistas",
+                    "Labas,\n" +
+                            "norime pranešti, kad šį kartą nepasirinkome Tavęs dalyvauti IT Akademijoje. Lauksime paraiškos kitais metais.\n" +
+                            "Iki susitikimo!");
+        }
 
         return new ApplicationResponse(app);
     }
