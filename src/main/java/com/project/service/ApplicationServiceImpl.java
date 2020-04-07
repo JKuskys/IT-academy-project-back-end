@@ -42,7 +42,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application app = applicationRepository.findById(id).orElseThrow(() -> new ApplicationNotFoundException(id));
         app.setNewInternalComment(false);
         app.setNewExternalComment(false);
-        return app;
+        return applicationRepository.save(app);
     }
 
     @Override
