@@ -19,9 +19,9 @@ CREATE TABLE application (
     source varchar(255) NOT NULL,
     application_date datetime NOT NULL,
     status ENUM ('NAUJA', 'PERZIURETA', 'POTENCIALUS', 'ATMESTA', 'PRIIMTA') default 'NAUJA',
-    is_new_internal_comment boolean default null,
+    is_new_internal_comment boolean default false,
     last_internal_comment_author varchar(255) default null,
-    is_new_external_comment boolean default null,
+    is_new_external_comment boolean default false,
     last_external_comment_author varchar(255) default null,
     FOREIGN KEY (user_id) REFERENCES user(id)
         ON UPDATE NO ACTION
