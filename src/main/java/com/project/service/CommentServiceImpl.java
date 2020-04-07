@@ -4,7 +4,9 @@ import com.project.exception.CommentAttachmentNotFoundException;
 import com.project.exception.CommentNotFoundException;
 import com.project.exception.ApplicationNotFoundException;
 import com.project.exception.UserNotFoundException;
+import com.project.model.Application;
 import com.project.model.Comment;
+import com.project.model.User;
 import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
 import com.project.repository.CommentRepository;
@@ -56,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
             CommentAttachmentNotFoundException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
 
-        if(!comment.getAttachmentName().equals(filename))
+        if (!comment.getAttachmentName().equals(filename))
             throw new CommentAttachmentNotFoundException(id);
 
         return comment.getAttachment();
@@ -84,9 +86,19 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponse addAdminComment(CommentRequest comment, Long appId)
             throws ApplicationNotFoundException, UserNotFoundException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        boolean isExternal = comment.isVisibleToApplicant();
+        Application app = applicationService.getById(appId);
 
-        Comment adminComment = new Comment(comment.getComment(), dateFormat.format(new Date()), comment.isVisibleToApplicant(),
-                applicationService.getById(appId), userService.getByEmail(comment.getAuthorEmail()), null);
+        if (isExternal) {
+            app.setNewExternalComment(true);
+            app.setLastExternalCommentAuthor(comment.getAuthorEmail());
+        } else {
+            app.setNewInternalComment(true);
+            app.setLastInternalCommentAuthor(comment.getAuthorEmail());
+        }
+
+        Comment adminComment = new Comment(comment.getComment(), dateFormat.format(new Date()), isExternal,
+                app, userService.getByEmail(comment.getAuthorEmail()), null);
 
         return new CommentResponse(commentRepository.save(adminComment));
     }
@@ -104,7 +116,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteAdminComment(Long id) throws CommentNotFoundException {
-        if(!commentRepository.existsById(id)){
+        if (!commentRepository.existsById(id)) {
             throw new CommentNotFoundException(id);
         }
         commentRepository.deleteById(id);
