@@ -1,9 +1,6 @@
 package com.project.controller;
 
-import com.project.exception.CommentAttachmentNotFoundException;
-import com.project.exception.CommentNotFoundException;
-import com.project.exception.ApplicationNotFoundException;
-import com.project.exception.UserNotFoundException;
+import com.project.exception.*;
 import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
 import com.project.service.CommentService;
@@ -50,7 +47,7 @@ public class CommentController {
 
     @PostMapping("/{id}/attachment")
     public ResponseEntity<HttpStatus> createCommentAttachment(@PathVariable("id") Long id, @RequestParam("file")MultipartFile file)
-            throws CommentNotFoundException, IOException, URISyntaxException {
+            throws CommentNotFoundException, IOException, InvalidFileException {
         commentService.addAttachment(id, file);
         return ResponseEntity.noContent().build();
     }

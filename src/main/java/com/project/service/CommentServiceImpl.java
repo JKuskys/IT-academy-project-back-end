@@ -1,9 +1,6 @@
 package com.project.service;
 
-import com.project.exception.CommentAttachmentNotFoundException;
-import com.project.exception.CommentNotFoundException;
-import com.project.exception.ApplicationNotFoundException;
-import com.project.exception.UserNotFoundException;
+import com.project.exception.*;
 import com.project.model.Application;
 import com.project.model.Comment;
 import com.project.model.User;
@@ -12,17 +9,15 @@ import com.project.model.request.CommentRequest;
 import com.project.model.response.CommentResponse;
 import com.project.repository.CommentRepository;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +29,9 @@ public class CommentServiceImpl implements CommentService {
     private final ApplicationService applicationService;
     private final UserService userService;
     private final EmailService emailService;
+
+    private final List<String> allowedFileExtensions = Arrays.asList("pdf", "doc", "docx");
+    private final List<String> allowedContentTypes = Arrays.asList("application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf");
 
     @Autowired
     public CommentServiceImpl(CommentRepository commentRepository, ApplicationService applicationService, UserService userService, EmailService emailService) {
@@ -69,11 +67,18 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException {
+    public void addAttachment(Long id, MultipartFile file) throws CommentNotFoundException, IOException, InvalidFileException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException(id));
         byte[] bytes = file.getBytes();
-        String extention = FilenameUtils.getExtension(file.getOriginalFilename());
-        //TODO some validation for the file goes in here
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+
+        if (file.getContentType() != null && !file.getContentType().trim().equals("")){
+            if(!allowedContentTypes.contains(file.getContentType()))
+                throw new InvalidFileException(file.getContentType());
+        }
+
+        if (!allowedFileExtensions.contains(extension))
+            throw new InvalidFileException(extension);
 
         comment.setAttachment(bytes);
         comment.setAttachmentName(file.getOriginalFilename());
