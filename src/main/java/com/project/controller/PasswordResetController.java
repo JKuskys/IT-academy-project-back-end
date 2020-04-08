@@ -7,7 +7,6 @@ import com.project.service.EmailService;
 import com.project.service.PasswordResetService;
 import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,8 +50,8 @@ public class PasswordResetController {
     }
 
     @PostMapping("/savePassword")
-    public String savePassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public String savePassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) throws UserNotFoundException {
+        User user = userService.getByEmail(passwordResetRequest.getEmail());
         userService.changeUserPassword(user, passwordResetRequest.getNewPassword());
         return "Slaptažodis pakeistas sėkmingai";
     }
