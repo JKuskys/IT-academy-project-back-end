@@ -3,7 +3,6 @@ package com.project.controller;
 import com.project.exception.UserNotFoundException;
 import com.project.model.User;
 import com.project.model.request.PasswordResetRequest;
-import com.project.model.response.GenericResponse;
 import com.project.service.EmailService;
 import com.project.service.PasswordResetService;
 import com.project.service.UserService;
@@ -43,20 +42,20 @@ public class PasswordResetController {
     }
 
     @PostMapping("/resetPassword")
-    public GenericResponse resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) throws UserNotFoundException {
+    public String resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) throws UserNotFoundException {
         User user = userService.getByEmail(userEmail);
         String token = UUID.randomUUID().toString();
         userService.createPasswordResetTokenForUser(user, token);
         emailService.constructResetTokenEmail(getAppUrl(request), token, user);
 
-        return new GenericResponse("Išsiųstas elektroninis laiškas su nuoroda pasikeisti slaptažodį");
+        return "Išsiųstas elektroninis laiškas su nuoroda pasikeisti slaptažodį";
     }
 
     @PostMapping("/savePassword")
-    public GenericResponse savePassword(@Valid PasswordResetRequest passwordResetRequest) {
+    public String savePassword(@Valid PasswordResetRequest passwordResetRequest) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.changeUserPassword(user, passwordResetRequest.getNewPassword());
-        return new GenericResponse("Slaptažodis pakeistas sėkmingai");
+        return "Slaptažodis pakeistas sėkmingai";
     }
 
     private String getAppUrl(HttpServletRequest request) {

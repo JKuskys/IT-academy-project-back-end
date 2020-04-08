@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/applications").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/comments").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/comments").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users/resetPassword").permitAll()
                 .antMatchers("api/users/savePassword").hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider))
