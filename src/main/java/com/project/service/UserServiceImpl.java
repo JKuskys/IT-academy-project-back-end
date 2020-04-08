@@ -3,10 +3,12 @@ package com.project.service;
 import com.project.exception.UserEmailExistsException;
 import com.project.exception.UserException;
 import com.project.exception.UserNotFoundException;
+import com.project.model.PasswordResetToken;
 import com.project.model.User;
 import com.project.model.UserRole;
 import com.project.model.request.UserRequest;
 import com.project.model.response.UserResponse;
+import com.project.repository.PasswordTokenRepository;
 import com.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,12 +25,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private BCryptPasswordEncoder bcryptEncoder;
+    private final PasswordTokenRepository passwordTokenRepository;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcryptEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcryptEncoder, PasswordTokenRepository passwordTokenRepository) {
         this.userRepository = userRepository;
         this.bcryptEncoder = bcryptEncoder;
+        this.passwordTokenRepository = passwordTokenRepository;
     }
 
     @Override
@@ -93,5 +97,17 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(id);
         }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordTokenRepository.save(myToken);
+    }
+
+    @Override
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(bcryptEncoder.encode(password));
+        userRepository.save(user);
     }
 }

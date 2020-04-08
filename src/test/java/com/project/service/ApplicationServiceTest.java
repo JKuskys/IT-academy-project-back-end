@@ -52,6 +52,7 @@ public class ApplicationServiceTest {
     public void shouldSucceedInGettingApplication() throws Exception {
         //given
         when(applicationRepository.findById(1L)).thenReturn(Optional.of(application));
+        when(applicationRepository.save(application)).thenReturn(application);
 
         //when
         Application response = applicationService.getById(1L);

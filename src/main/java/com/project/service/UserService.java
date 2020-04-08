@@ -21,4 +21,8 @@ public interface UserService {
     UserResponse updateUser(UserRequest user, Long id) throws UserException;
 
     void deleteUser(final long id) throws UserNotFoundException;
+
+    void createPasswordResetTokenForUser(User user, String token);
+
+    void changeUserPassword(User user, String password);
 }
