@@ -29,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void constructResetTokenEmail(String contextPath, String token, User user) {
-        String url = contextPath + "/user/changePassword?id=" + user.getId() + "&token=" + token;
+        String url = contextPath + "/api/user/changePassword?id=" + user.getId() + "&token=" + token;
         String message = "Norėdami pasikeisti slaptažodį, paspauskite žemiau esančią nuorodą";
         sendEmail(user.getEmail(), "Pasikeisti slaptažodį", message + "\r\n" + url);
     }

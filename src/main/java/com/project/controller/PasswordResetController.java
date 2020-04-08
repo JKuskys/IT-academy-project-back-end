@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("api/users")
+@RequestMapping("api/user")
 public class PasswordResetController {
 
     private final UserService userService;
@@ -32,7 +32,7 @@ public class PasswordResetController {
     }
 
     @GetMapping("/changePassword")
-    public String showChangePasswordPage(Model model, @RequestParam("id") long id, @RequestParam("token") String token) {
+    public String showChangePasswordPage(Model model, @RequestParam("id") Long id, @RequestParam("token") String token) {
         String result = passwordResetService.validatePasswordResetToken(id, token);
         if(result != null) {
             model.addAttribute("message", result);
