@@ -47,7 +47,6 @@ public class PasswordResetController {
         String token = UUID.randomUUID().toString();
         userService.createPasswordResetTokenForUser(user, token);
         emailService.constructResetTokenEmail(getAppUrl(request), token, user);
-
         return "Išsiųstas elektroninis laiškas su nuoroda pasikeisti slaptažodį";
     }
 
