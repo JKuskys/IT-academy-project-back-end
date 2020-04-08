@@ -51,7 +51,7 @@ public class PasswordResetController {
     }
 
     @PostMapping("/savePassword")
-    public String savePassword(@Valid PasswordResetRequest passwordResetRequest) {
+    public String savePassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.changeUserPassword(user, passwordResetRequest.getNewPassword());
         return "Slaptažodis pakeistas sėkmingai";
