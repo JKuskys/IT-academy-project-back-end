@@ -54,6 +54,16 @@ create table application_comments (
         on delete cascade
 );
 
+create table password_reset_token (
+    id bigint not null primary key auto_increment,
+    expiry_date datetime,
+    token varchar(255),
+    user_id bigint,
+    foreign key (user_id) references user(id)
+        on update no action
+        on delete cascade
+);
+
 INSERT INTO user values (1, 'admin@mail.com', '$2a$10$KYQpdsE94e8xY76SVz8aauXYj7RSi3vKQmZXRrMNpZSiXx9wt8QJm', 'Monika Kopaitė');
 INSERT INTO user values (2, 'admin@admin.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Linas Tomkus');
 INSERT INTO user values (3, 'urte.ruk@mail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Urtė Rukaitė');
