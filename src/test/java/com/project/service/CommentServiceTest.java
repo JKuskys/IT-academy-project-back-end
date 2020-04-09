@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +48,9 @@ public class CommentServiceTest {
 
     @Mock
     private UserServiceImpl userService;
+
+    @Mock
+    private MessageSource messageSource;
 
     @Before
     public void init() {
@@ -116,6 +120,7 @@ public class CommentServiceTest {
         when(userService.getByEmail(any(String.class))).thenReturn(user);
         when(commentRequest.getAuthorEmail()).thenReturn("test author email");
         when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+        when(messageSource.getMessage("dateFormat", null, null)).thenReturn("yyyy-MM-dd HH:mm:ss");
 
         CommentResponse response = commentService.addAdminComment(commentRequest, 1L);
 

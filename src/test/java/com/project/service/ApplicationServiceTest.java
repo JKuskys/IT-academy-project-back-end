@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 
 import java.util.Optional;
 
@@ -43,6 +44,9 @@ public class ApplicationServiceTest {
     @Mock
     private UserServiceImpl userService;
 
+    @Mock
+    private MessageSource messageSource;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -70,6 +74,7 @@ public class ApplicationServiceTest {
         when(applicationRequest.getUser()).thenReturn(userRequest);
         when(userService.addUser(userRequest)).thenReturn(user);
         when(applicationRepository.save(any(Application.class))).thenReturn(application);
+        when(messageSource.getMessage("dateFormat", null, null)).thenReturn("yyyy-MM-dd HH:mm:ss");
 
         when(application.getApplicant()).thenReturn(user);
         when(application.getId()).thenReturn(1L);
