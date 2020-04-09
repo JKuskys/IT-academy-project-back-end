@@ -57,6 +57,6 @@ public class PasswordResetController {
     }
 
     private String getAppUrl(HttpServletRequest request) {
-        return request.getHeader("referer");
+        return request.getHeader("origin");
     }
 }
