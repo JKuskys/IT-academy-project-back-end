@@ -42,7 +42,7 @@ public class CommentController {
             throws CommentNotFoundException, CommentAttachmentNotFoundException {
         byte[] data = commentService.getAttachment(id, filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"").body(data);
+                String.format("attachment; filename=\"%s\"", filename)).body(data);
     }
 
     @PostMapping("/{id}/attachment")

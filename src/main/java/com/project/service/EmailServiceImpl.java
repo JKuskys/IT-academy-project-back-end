@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
-
     @Autowired
     public EmailServiceImpl(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
@@ -29,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void constructResetTokenEmail(String contextPath, String token, User user) {
-        String url = contextPath + "/api/user/changePassword?id=" + user.getId() + "&token=" + token;
+        String url = String.format("%s/change-password;id=%d;token=%s", contextPath, user.getId(), token);
         String message = "Norėdami pasikeisti slaptažodį, paspauskite žemiau esančią nuorodą";
         sendEmail(user.getEmail(), "Pasikeisti slaptažodį", message + "\r\n" + url);
     }
