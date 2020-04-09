@@ -30,17 +30,17 @@ public class PasswordResetController {
         this.passwordResetService = passwordResetService;
     }
 
-    @GetMapping("/changePassword")
+    @GetMapping("/change-password")
     public String showChangePasswordPage(Model model, @RequestParam("id") Long id, @RequestParam("token") String token) {
         String result = passwordResetService.validatePasswordResetToken(id, token);
         if(result != null) {
             model.addAttribute("message", result);
-            return "redirect:/login";
+            return "redirect:/home";
         }
-        return "redirect:/updatePassword";
+        return "redirect:/update-password";
     }
 
-    @PostMapping("/resetPassword")
+    @PostMapping("/reset-password")
     public String resetPassword(HttpServletRequest request, @RequestParam("email") String userEmail) throws UserNotFoundException {
         User user = userService.getByEmail(userEmail);
         String token = UUID.randomUUID().toString();
@@ -49,9 +49,9 @@ public class PasswordResetController {
         return "Išsiųstas elektroninis laiškas su nuoroda pasikeisti slaptažodį";
     }
 
-    @PostMapping("/savePassword")
+    @PostMapping("/save-password")
     public String savePassword(@Valid @RequestBody PasswordResetRequest passwordResetRequest) throws UserNotFoundException {
-        User user = userService.getByEmail(passwordResetRequest.getEmail());
+        User user = userService.getById(passwordResetRequest.getId());
         userService.changeUserPassword(user, passwordResetRequest.getNewPassword());
         return "Slaptažodis pakeistas sėkmingai";
     }

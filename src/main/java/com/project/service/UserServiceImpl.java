@@ -101,8 +101,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createPasswordResetTokenForUser(User user, String token) {
-        PasswordResetToken myToken = new PasswordResetToken(token, user);
-        passwordTokenRepository.save(myToken);
+        PasswordResetToken resetToken = new PasswordResetToken(token, user);
+        passwordTokenRepository.save(resetToken);
     }
 
     @Override
