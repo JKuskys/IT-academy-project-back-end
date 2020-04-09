@@ -15,6 +15,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 import static org.mockito.Mockito.when;
 
 public class ApplicationControllerTest {
@@ -38,6 +42,15 @@ public class ApplicationControllerTest {
         when(applicationService.addApplication(new ApplicationRequest())).thenReturn(applicationResponse);
         when(applicationService.updateApplication(new ApplicationUpdateRequest(), 1L)).thenReturn(applicationResponse);
         when(application.getApplicant()).thenReturn(new User());
+    }
+
+    @Test
+    public void shouldSucceedInFetchingAllApplications() {
+        when(applicationService.getAll()).thenReturn(Arrays.asList(applicationResponse, applicationResponse));
+
+        ResponseEntity<List<ApplicationResponse>> response = applicationController.fetchApplications();
+
+        Assert.assertEquals(2, Objects.requireNonNull(response.getBody()).size());
     }
 
     @Test

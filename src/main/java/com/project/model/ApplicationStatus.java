@@ -5,5 +5,5 @@ public enum ApplicationStatus {
     PERZIURETA,
     POTENCIALUS,
     ATMESTA,
-    PRIIMTA;
+    PRIIMTA
 }

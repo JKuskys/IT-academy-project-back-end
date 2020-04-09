@@ -10,10 +10,11 @@ import com.project.model.response.CommentResponse;
 import com.project.repository.CommentRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,17 +30,21 @@ public class CommentServiceImpl implements CommentService {
     private final ApplicationService applicationService;
     private final UserService userService;
     private final EmailService emailService;
+    private final MessageSource messageSource;
 
     private final List<String> allowedFileExtensions = Arrays.asList("pdf", "doc", "docx");
     private final List<String> allowedContentTypes = Arrays.asList("application/msword", "application/pdf",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/octet-stream");
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, ApplicationService applicationService, UserService userService, EmailService emailService) {
+    public CommentServiceImpl(
+            CommentRepository commentRepository, ApplicationService applicationService, UserService userService,
+            EmailService emailService, MessageSource messageSource) {
         this.commentRepository = commentRepository;
         this.applicationService = applicationService;
         this.userService = userService;
         this.emailService = emailService;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -73,8 +78,8 @@ public class CommentServiceImpl implements CommentService {
         byte[] bytes = file.getBytes();
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 
-        if (file.getContentType() != null && !file.getContentType().trim().equals("")){
-            if(!allowedContentTypes.contains(file.getContentType()))
+        if (file.getContentType() != null && !file.getContentType().trim().equals("")) {
+            if (!allowedContentTypes.contains(file.getContentType()))
                 throw new InvalidFileException(file.getContentType());
         }
 
@@ -95,7 +100,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentResponse addAdminComment(CommentRequest comment, Long appId)
             throws ApplicationNotFoundException, UserNotFoundException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat(messageSource.getMessage("dateFormat", null, null));
         boolean isExternal = comment.isVisibleToApplicant();
         Application app = applicationService.getById(appId);
         User author = userService.getByEmail(comment.getAuthorEmail());
@@ -105,9 +110,8 @@ public class CommentServiceImpl implements CommentService {
             app.setLastExternalCommentAuthor(comment.getAuthorEmail());
             if (author.getRoles().contains(UserRole.ADMIN.name())) {
                 emailService.sendEmail(
-                        app.getApplicant().getEmail(), "Gavote naują komentarą",
-                        "Labas!\n" +
-                                "Gavai naują komentarą nuo IT Akademijos. Perskaityti gali prisijungęs prie sistemos.");
+                        app.getApplicant().getEmail(), messageSource.getMessage("comService.newCommentHeader", null, null),
+                        messageSource.getMessage("comService.newCommentMessage", null, null));
             }
         } else {
             app.setNewInternalComment(true);
@@ -124,7 +128,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponse updateAdminComment(CommentRequest commentRequest, Long id, Long appId) throws CommentNotFoundException {
         return new CommentResponse(commentRepository.findById(id)
                 .map(existingComment -> {
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    DateFormat dateFormat = new SimpleDateFormat(messageSource.getMessage("dateFormat", null, null));
                     existingComment.setComment(commentRequest.getComment());
                     existingComment.setDateModified(dateFormat.format(new Date()));
                     return commentRepository.save(existingComment);

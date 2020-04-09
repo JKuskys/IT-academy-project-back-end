@@ -51,19 +51,15 @@ public class UserControllerTest {
 
     @Test
     public void shouldSucceedInFetchingUser() throws Exception {
-        //given
         when(userService.getById(1L)).thenReturn(user);
 
-        //when
         ResponseEntity response = userController.fetchUser(1L);
 
-        //then
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void shouldSucceedInFetchingUserApplication() throws Exception {
-        //given
         when(userService.getByEmail(any(String.class))).thenReturn(user);
         when(user.getApplication()).thenReturn(application);
         when(userAppRequest.getEmail()).thenReturn("test@email.com");
@@ -84,43 +80,33 @@ public class UserControllerTest {
         when(application.getApplicant().getEmail()).thenReturn("test@email.com");
         when(application.getStatus()).thenReturn(ApplicationStatus.NAUJA);
 
-        //when
         ResponseEntity response = userController.fetchUserApplication(userAppRequest);
 
-        //then
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void shouldSucceedInCreatingUser() throws Exception {
-        //given
         when(userService.addUser(userRequest)).thenReturn(user);
 
-        //when
         ResponseEntity response = userController.createUser(userRequest);
 
-        //then
         Assert.assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     public void shouldSucceedInUpdatingUser() throws Exception {
-        //given
         when(userService.updateUser(userRequest, 1L)).thenReturn(userResponse);
 
-        //when
         ResponseEntity response = userController.updateUser(userRequest, 1L);
 
-        //then
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void shouldSucceedInDeletingUser() throws Exception {
-        //when
         ResponseEntity response = userController.deleteUser(1L);
 
-        //then
         Assert.assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 

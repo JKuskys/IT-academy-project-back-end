@@ -16,7 +16,7 @@ public class UserResponse implements Serializable {
 
     private String fullName;
 
-    public UserResponse (User user) {
+    public UserResponse(User user) {
         this.email = user.getEmail();
         this.fullName = user.getFullName();
     }

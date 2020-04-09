@@ -2,6 +2,7 @@ package com.project.service;
 
 import com.project.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,12 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
+    private final MessageSource messageSource;
+
     @Autowired
-    public EmailServiceImpl(JavaMailSender javaMailSender) {
+    public EmailServiceImpl(JavaMailSender javaMailSender, MessageSource messageSource) {
         this.javaMailSender = javaMailSender;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -29,7 +33,8 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void constructResetTokenEmail(String contextPath, String token, User user) {
         String url = String.format("%s/change-password;id=%d;token=%s", contextPath, user.getId(), token);
-        String message = "Norėdami pasikeisti slaptažodį, paspauskite žemiau esančią nuorodą";
-        sendEmail(user.getEmail(), "Pasikeisti slaptažodį", message + "\r\n" + url);
+        String message = messageSource.getMessage("emailService.passwordResetMessage", null, null);
+        sendEmail(user.getEmail(), messageSource.getMessage("emailService.passwordResetHeader", null, null),
+                message + "\r\n" + url);
     }
 }

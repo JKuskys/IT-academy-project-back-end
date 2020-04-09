@@ -12,9 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
@@ -47,11 +48,11 @@ public class User implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    public User (UserRequest user) {
+    public User(UserRequest user) {
         this.fullName = user.getFullName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.roles =  Collections.singletonList(UserRole.USER.name());
+        this.roles = Collections.singletonList(UserRole.USER.name());
     }
 
     @Override

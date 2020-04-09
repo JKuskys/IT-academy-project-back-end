@@ -8,17 +8,21 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import static io.jsonwebtoken.SignatureAlgorithm.*;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 
 @Component
 public class JwtTokenProvider {
@@ -28,11 +32,13 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.expire-length:900000}") // 15min sesijos trukme
     private long validityInMilliseconds;
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final MessageSource messageSource;
 
     @Autowired
-    public JwtTokenProvider(@Qualifier("CustomUserDetailsService") UserDetailsService userDetailsService) {
+    public JwtTokenProvider(@Qualifier("CustomUserDetailsService") UserDetailsService userDetailsService, MessageSource messageSource) {
         this.userDetailsService = userDetailsService;
+        this.messageSource = messageSource;
     }
 
     @PostConstruct
@@ -81,7 +87,7 @@ public class JwtTokenProvider {
             }
             return true;
         } catch (JwtException | IllegalArgumentException ex) {
-            throw new InvalidJwtAuthenticationException("Sesija pasibaigė");
+            throw new InvalidJwtAuthenticationException(messageSource.getMessage("security.sessionExpired", null, null));
         }
     }
 }

@@ -51,7 +51,7 @@ public class ApplicationResponse implements Serializable {
 
     private String lastExternalCommentAuthor;
 
-    public ApplicationResponse (Application app) {
+    public ApplicationResponse(Application app) {
         this.id = app.getId();
         this.fullName = app.getApplicant().getFullName();
         this.phoneNumber = app.getPhoneNumber();
