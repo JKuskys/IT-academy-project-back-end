@@ -50,29 +50,23 @@ public class ApplicationServiceTest {
 
     @Test
     public void shouldSucceedInGettingApplication() throws Exception {
-        //given
         when(applicationRepository.findById(1L)).thenReturn(Optional.of(application));
         when(applicationRepository.save(application)).thenReturn(application);
 
-        //when
         Application response = applicationService.getById(1L);
 
-        //then
         Assert.assertNotNull(response);
     }
 
     @Test(expected = ApplicationNotFoundException.class)
     public void shouldThrowExceptionWhenApplicationDoesNotExist() throws Exception {
-        //given
         when(applicationRepository.findById(10L)).thenThrow(ApplicationNotFoundException.class);
 
-        //when
         applicationService.getById(10L);
     }
 
     @Test
     public void shouldSucceedInSavingApplication() throws Exception {
-        //given
         when(applicationRequest.getUser()).thenReturn(userRequest);
         when(userService.addUser(userRequest)).thenReturn(user);
         when(applicationRepository.save(any(Application.class))).thenReturn(application);
@@ -93,10 +87,8 @@ public class ApplicationServiceTest {
         when(application.getApplicant().getEmail()).thenReturn("test@email.com");
         when(application.getStatus()).thenReturn(ApplicationStatus.NAUJA);
 
-        //when
         ApplicationResponse response = applicationService.addApplication(applicationRequest);
 
-        //then
         Assert.assertEquals(Long.valueOf(1), response.getId());
         Assert.assertEquals("test name", response.getFullName());
         Assert.assertEquals("test number", response.getPhoneNumber());

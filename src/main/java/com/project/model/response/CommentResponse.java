@@ -30,7 +30,7 @@ public class CommentResponse implements Serializable {
 
     private String attachmentName;
 
-    public CommentResponse (Comment comment) {
+    public CommentResponse(Comment comment) {
         this.id = comment.getId();
         this.comment = comment.getComment();
         this.author = comment.getAuthor().getFullName();

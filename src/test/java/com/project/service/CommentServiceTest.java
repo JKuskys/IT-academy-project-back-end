@@ -68,14 +68,11 @@ public class CommentServiceTest {
 
     @Test
     public void shouldSucceedInGettingComment() throws Exception {
-        //given
         when(commentRepository.findById(1L)).thenReturn(Optional.of(comment));
         when(comment.isVisibleToApplicant()).thenReturn(false);
 
-        //when
         CommentResponse response = commentService.getById(1L);
 
-        //then
         Assert.assertEquals(Long.valueOf(1), response.getId());
         Assert.assertEquals("test comment", response.getComment());
         Assert.assertEquals("test name", response.getAuthor());
@@ -88,40 +85,31 @@ public class CommentServiceTest {
 
     @Test
     public void shouldSucceedInGettingApplicantVisibleComments() {
-        //given
         when(comment.isVisibleToApplicant()).thenReturn(true);
 
-        //when
         List<CommentResponse> response = commentService.getApplicantVisibleComments(1L);
 
-        //then
         Assert.assertEquals(1, response.size());
     }
 
     @Test
     public void shouldSucceedInGettingApplicantVisibleCommentsWhenThereAreNone() {
-        //given
         when(comment.isVisibleToApplicant()).thenReturn(false);
 
-        //when
         List<CommentResponse> response = commentService.getApplicantVisibleComments(1L);
 
-        //then
         Assert.assertEquals(0, response.size());
     }
 
     @Test(expected = CommentNotFoundException.class)
     public void shouldThrowExceptionWhenCommentDoesNotExist() throws Exception {
-        //given
         when(commentRepository.findById(10L)).thenThrow(CommentNotFoundException.class);
 
-        //when
         commentService.getById(10L);
     }
 
     @Test
     public void shouldSucceedInSavingComment() throws Exception {
-        //given
         when(commentRequest.getComment()).thenReturn("test comment");
         when(comment.isVisibleToApplicant()).thenReturn(true);
         when(applicationService.getById(1L)).thenReturn(application);
@@ -129,10 +117,8 @@ public class CommentServiceTest {
         when(commentRequest.getAuthorEmail()).thenReturn("test author email");
         when(commentRepository.save(any(Comment.class))).thenReturn(comment);
 
-        //when
         CommentResponse response = commentService.addAdminComment(commentRequest, 1L);
 
-        //then
         Assert.assertEquals(Long.valueOf(1), response.getId());
         Assert.assertEquals("test comment", response.getComment());
         Assert.assertEquals("test name", response.getAuthor());

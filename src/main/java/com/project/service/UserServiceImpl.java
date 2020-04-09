@@ -24,14 +24,14 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private BCryptPasswordEncoder bcryptEncoder;
+    private BCryptPasswordEncoder bCryptEncoder;
     private final PasswordTokenRepository passwordTokenRepository;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcryptEncoder, PasswordTokenRepository passwordTokenRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptEncoder, PasswordTokenRepository passwordTokenRepository) {
         this.userRepository = userRepository;
-        this.bcryptEncoder = bcryptEncoder;
+        this.bCryptEncoder = bCryptEncoder;
         this.passwordTokenRepository = passwordTokenRepository;
     }
 
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
             throw new UserEmailExistsException(userRequest.getEmail());
         }
 
-        userRequest.setPassword(bcryptEncoder.encode(userRequest.getPassword()));
+        userRequest.setPassword(bCryptEncoder.encode(userRequest.getPassword()));
 
         User user = new User(userRequest);
 
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changeUserPassword(User user, String password) {
-        user.setPassword(bcryptEncoder.encode(password));
+        user.setPassword(bCryptEncoder.encode(password));
         userRepository.save(user);
     }
 }

@@ -10,7 +10,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
-        return password != null && password.matches( "^(?=.*[0-9])(?=.*[A-Z])(?=\\S+$).{7,30}$")
+        return password != null && password.matches("^(?=.*[0-9])(?=.*[A-Z])(?=\\S+$).{7,30}$")
                 && password.length() > 6;
     }
 }

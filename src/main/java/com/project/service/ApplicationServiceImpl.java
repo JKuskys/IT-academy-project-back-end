@@ -10,6 +10,7 @@ import com.project.model.request.ApplicationUpdateRequest;
 import com.project.model.response.ApplicationResponse;
 import com.project.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -25,12 +26,15 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final UserService userService;
     private final EmailService emailService;
+    private final MessageSource messageSource;
 
     @Autowired
-    public ApplicationServiceImpl(ApplicationRepository applicationRepository, UserService userService, EmailService emailService) {
+    public ApplicationServiceImpl(
+            ApplicationRepository applicationRepository, UserService userService, EmailService emailService, MessageSource messageSource) {
         this.applicationRepository = applicationRepository;
         this.userService = userService;
         this.emailService = emailService;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationResponse addApplication(ApplicationRequest application) throws UserException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat(messageSource.getMessage("dateFormat", null, null));
         User user = userService.addUser(application.getUser());
         Application newApplication = new Application(application, ApplicationStatus.NAUJA, new ArrayList<>(), user, dateFormat.format(new Date()));
         return new ApplicationResponse(applicationRepository.save(newApplication));
@@ -72,15 +76,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if (newStatus.equals(ApplicationStatus.PRIIMTA)) {
             emailService.sendEmail(
-                    app.getApplicant().getEmail(), "Jūsų paraiškos statusas pakeistas",
-                    "Labas!\n" +
-                            "Sveikiname tapus IT Akademijos nariu! Laukia daug išūkių ir geras laikas. Daugiau informacijos netrukus");
+                    app.getApplicant().getEmail(), messageSource.getMessage("appService.statusChangeHeader", null, null),
+                    messageSource.getMessage("appService.statusChangeMessageAccept", null, null));
         } else if (newStatus.equals(ApplicationStatus.ATMESTA)) {
             emailService.sendEmail(
-                    app.getApplicant().getEmail(), "Jūsų paraiškos statusas pakeistas",
-                    "Labas,\n" +
-                            "norime pranešti, kad šį kartą nepasirinkome Tavęs dalyvauti IT Akademijoje. Lauksime paraiškos kitais metais.\n" +
-                            "Iki susitikimo!");
+                    app.getApplicant().getEmail(), messageSource.getMessage("appService.statusChangeHeader", null, null),
+                    messageSource.getMessage("appService.statusChangeMessageDecline", null, null));
         }
 
         return new ApplicationResponse(app);
