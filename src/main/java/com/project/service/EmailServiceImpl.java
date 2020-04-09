@@ -28,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void constructResetTokenEmail(String contextPath, String token, User user) {
-        String url = String.format("%s/change-password?id=%d&token=%s", contextPath, user.getId(), token);
+        String url = String.format("%s/change-password;id=%d;token=%s", contextPath, user.getId(), token);
         String message = "Norėdami pasikeisti slaptažodį, paspauskite žemiau esančią nuorodą";
         sendEmail(user.getEmail(), "Pasikeisti slaptažodį", message + "\r\n" + url);
     }
