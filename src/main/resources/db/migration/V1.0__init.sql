@@ -69,34 +69,48 @@ INSERT INTO user values (2, 'admin@admin.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLt
 INSERT INTO user values (3, 'urte.ruk@mail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Urtė Rukaitė');
 INSERT INTO user values (4, 'arturas.lin@mail.com', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Artūras Linaukas');
 INSERT INTO user values (5, 'simonasjankevicius@mail.lt', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Simonas Jankevičius');
+INSERT INTO user values (6, 'linabur@mail.lt', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Lina Buraitė');
+INSERT INTO user values (7, 't.paulauskas@mail.lt', '$2a$10$.RaqqkjTdQA985oETEdqWujLtp/ipaXBKWZK1XcGLNU2ExgAC1dcS', 'Tomas Paulauskas');
 
 INSERT INTO application values (1, 3, '+37067712456', 'VU', 'Mėgstu skaityti knygas, keliauti', true,
     '', true, 'Noriu daug išmokti', 'Mėgstu įvairias web technologijas', 'Iš facebook',
-    '2020-03-13 10:34:09', 'POTENCIALUS', false, null, false, null);
+    '2020-03-13 10:34:09', 'POTENCIALUS', true, 'admin@admin.com', false, null);
 INSERT INTO application values (2, 4, '+37060982454', 'Kauno technologijos universitetas', 'Mėgstu žaisti kompiuteriu, važinėtis dviračiu', false,
     'nežinau kur kreiptis', true, 'Noriu mokytis iš profesionalų', 'Man labai patinka big data, mokiausi principų savarankiškai', 'Iš draugų',
-    '2020-03-21 11:34:09', 'PERZIURETA', false, null, false, null);
+    '2020-03-14 11:34:09', 'PERZIURETA', true, 'admin@mail.com', false, null);
 INSERT INTO application values (3, 5, '+37060482000', 'VGTU', 'Programuoju', true, '', true,
     'Noriu išmokti naujų dalykų', 'Šiaip daug mokausi savarankiškai, daugiausiai įvairios web technologijos', 'Iš draugo',
-    '2020-03-26 12:34:09', 'NAUJA', false, null, false, null);
+    '2020-03-17 12:34:09', 'PRIIMTA', false, null, false, null);
+INSERT INTO application values (4, 6, '+37060485300', 'KTU', 'Programuoju, lankau šokius', true, '', false,
+    'Noriu gauti daug patirties', 'Šiaip daug mokausi savarankiškai įvairiose srityse', 'Iš pažįstamo',
+    '2020-03-18 12:34:09', 'ATMESTA', false, null, true, 'linabur@mail.lt');
+INSERT INTO application values (5, 7, '+37060485165', 'VU', 'Mėgstu kurti žaidimus', true, '', true,
+    'Noriu gauti daug patirties', 'Labiausiai domina žaidimai ir jų kūrimas', 'Iš facebook',
+    '2020-03-21 12:34:09', 'NAUJA', false, null, false, null);
 
 insert into user_roles values (1, 'ADMIN', 1);
 insert into user_roles values (2, 'ADMIN', 2);
 insert into user_roles values (3, 'USER', 3);
 insert into user_roles values (4, 'USER', 4);
 insert into user_roles values (5, 'USER', 5);
+insert into user_roles values (6, 'USER', 6);
+insert into user_roles values (7, 'USER', 7);
 
 insert into application_comments values (1, 1, 1, 'Visai neblogai atrodo',
     '2020-03-22 11:34:09', null, false, null, null );
-insert into application_comments values (2, 2, 1, 'Galėjo apie technologjas plačiau',
+insert into application_comments values (2, 2, 1, 'Galėjo apie technologijas plačiau',
     '2020-03-23 15:34:09', null, false, null, null );
-insert into application_comments values (3, 1, 2, 'Reikėtų susisiekti dėl tos sutarties, žmogus nežino tvarkos matyt',
+insert into application_comments values (3, 2, 2, 'Reikėtų susisiekti dėl tos sutarties, žmogus nežino tvarkos matyt',
     '2020-03-23 16:34:09', null, false, null, null );
-insert into application_comments values (4, 2, 2, 'Šiaip atrodo neblogai',
+insert into application_comments values (4, 1, 2, 'Šiaip atrodo neblogai',
     '2020-03-24 11:34:09', null, false, null, null );
 insert into application_comments values (5, 1, 2, 'Galbūt galėtumėte plačiau pakomentuoti, kodėl negalite pasirašyti trišalės sutarties?',
     '2020-03-24 14:34:09', null, true, null, null );
 insert into application_comments values (6, 4, 2, 'Nežinau, į ką universitete kreiptis šiuo klausimu',
     '2020-03-24 18:34:09', null, true, null, null );
-insert into application_comments values (7, 1, 2, 'Paprastai studijų skyrius turetų galįti padėti tokiu klausimu',
+insert into application_comments values (7, 1, 2, 'Paprastai studijų skyrius turetų galėti padėti tokiu klausimu',
     '2020-03-25 10:34:09', null, true, null, null );
+insert into application_comments values (8, 1, 4, 'Turėsim nuliūdinti, bet šiemet nepatekote. Geriausia aplikuojant žinoti, kad turėsite galimybę skirti laiko',
+    '2020-03-28 10:34:09', null, true, null, null );
+insert into application_comments values (9, 6, 4, 'Supratau',
+    '2020-03-29 10:34:09', null, true, null, null );
